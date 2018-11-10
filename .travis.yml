@@ -8,7 +8,6 @@ install:
 
 script:
   - scripts/prebuild.sh
-  - yarn test
 
 deploy:
   provider: azure_web_apps
