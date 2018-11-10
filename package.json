@@ -4,7 +4,8 @@
   "description": "backend for engineering-editor",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js localhost 8080"
+    "start": "node src/index.js",
+    "start:w": "nodemon src/index.js localhost 8080"
   },
   "dependencies": {
     "body-parser": "1.18.3",
