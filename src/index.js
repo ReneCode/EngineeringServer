@@ -16,7 +16,7 @@ app.use(
   })
 );
 app.get("/", (req, res) => {
-  res.send("hi engineering server");
+  res.send("hi engineering server. Try /graphql");
 });
 
 const port = process.env.PORT || 8080;
