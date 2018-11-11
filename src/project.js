@@ -10,13 +10,7 @@ class Project {
 
 class ProjectList {
   constructor() {
-    this.projects = [
-      { id: "a", name: "project-a" },
-      { id: "b", name: "project-b" },
-      { id: "c", name: "project-c" },
-      { id: "d", name: "project-d" },
-      { id: "e", name: "project-e" }
-    ];
+    this.projects = [];
   }
 
   createProject(name) {

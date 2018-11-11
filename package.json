@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "start:w": "nodemon src/index.js localhost 8080"
+    "start:w": "nodemon src/index.js localhost 8080",
+    "test": "jest --watch"
   },
   "dependencies": {
     "body-parser": "1.18.3",
@@ -16,6 +17,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "jest": "^23.6.0",
     "nodemon": "1.18.4"
   },
   "keywords": []
