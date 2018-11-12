@@ -6,9 +6,9 @@ const rlog = args => {
 };
 
 const rootValue = {
-  createProject: ({ name }) => {
+  createProject: ({ input }) => {
     rlog("createProject");
-    return projectList.createProject(name);
+    return projectList.createProject(input.name);
   },
 
   projects: () => {
@@ -27,9 +27,9 @@ const rootValue = {
     return pageList.getPages(projectId);
   },
 
-  createPage: ({ projectId, name }) => {
+  createPage: ({ input }) => {
     rlog("createPage");
-    return pageList.createPage(projectId, name);
+    return pageList.createPage(input.projectId, input.name);
   }
 };
 

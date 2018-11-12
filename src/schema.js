@@ -9,14 +9,22 @@ const schema = buildSchema(`
   }
 
   type Mutation {
-    createProject(name: String!): Project
-    createPage(projectId: String!, name: String!): Page
+    createProject(input: ProjectInput!): Project
+    createPage(input: PageInput!) : Page
+  }
+
+  input ProjectInput {
+    name: String
   }
 
   type Project {
     id: String,
     name: String
+  }
 
+  input PageInput {
+    projectId: String,
+    name: String
   }
 
   type Page {
