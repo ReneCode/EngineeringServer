@@ -17,7 +17,7 @@ const schema = buildSchema(`
     createPage(input: PageInput!) : Page
     
     createGraphic(input: CreateGraphicInput!): Graphic
-    updateGraphic(input: UpdateGraphicInput!): Graphic
+    updateGraphics(input: [UpdateGraphicInput]!): [Graphic]
     deleteGraphic(input: DeleteGraphicInput!): ID
   }
 
@@ -26,7 +26,7 @@ const schema = buildSchema(`
   }
 
   type Project {
-    id: ID!,
+    id: ID,
     name: String
   }
 
@@ -36,8 +36,8 @@ const schema = buildSchema(`
   }
 
   type Page {
-    projectId: ID!,
-    id: ID,!
+    projectId: ID,
+    id: ID,
     name: String
   }
 
@@ -57,8 +57,9 @@ const schema = buildSchema(`
   }
 
   input UpdateGraphicInput {
+    projectId: ID!,
     id: ID!,
-    content: String
+    content: String!
   }
 
   input DeleteGraphicInput {

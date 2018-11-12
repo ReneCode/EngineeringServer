@@ -37,9 +37,29 @@ class GraphicList {
   }
 
   createGraphic(projectId, pageId, type, content) {
-    const g = new Graphic(projectId, pageId, type, content);
+    const g = { projectId, pageId, type, content, id: uuidv4() };
     this.graphics.push(g);
     return g;
+  }
+
+  updateGraphics(newGraphics) {
+    try {
+      this.graphics = this.graphics.map(g => {
+        const newGraphic = newGraphics.find(
+          ng => g.projectId === ng.projectId && g.id === ng.id
+        );
+        if (newGraphic) {
+          return {
+            ...g,
+            content: newGraphic.content
+          };
+        } else {
+          return g;
+        }
+      });
+    } catch (ex) {
+      console.log(ex);
+    }
   }
 
   getGraphics(projectId, pageId) {

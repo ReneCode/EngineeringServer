@@ -2,8 +2,8 @@ const { projectList } = require("./project");
 const { pageList } = require("./page");
 const { graphicList } = require("./graphic");
 
-const rlog = args => {
-  console.log(">", args);
+const rlog = (...args) => {
+  console.log(...args);
 };
 
 const rootValue = {
@@ -23,8 +23,9 @@ const rootValue = {
 
   // --------
 
-  pages: ({ projectId }) => {
-    rlog("pages");
+  pages: args => {
+    rlog("pages:", args);
+    const { projectId } = args;
     return pageList.getPages(projectId);
   },
 
@@ -47,6 +48,11 @@ const rootValue = {
       input.type,
       input.content
     );
+  },
+
+  updateGraphics: ({ input }) => {
+    rlog("updateGraphics");
+    return graphicList.updateGraphics(input);
   }
 };
 
