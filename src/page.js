@@ -10,7 +10,7 @@ class Page {
 
 class PageList {
   constructor() {
-    this.pages = [];
+    this.pages = [{ projectId: "prjId", id: "pageId", name: "new page" }];
   }
 
   createPage(projectId, name) {

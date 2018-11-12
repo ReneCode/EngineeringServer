@@ -4,13 +4,12 @@ class Project {
   constructor(name) {
     this.id = uuidv4();
     this.name = name;
-    this.pages = [1, 2, 3];
   }
 }
 
 class ProjectList {
   constructor() {
-    this.projects = [];
+    this.projects = [{ id: "prjId", name: "new Project" }];
   }
 
   createProject(name) {
