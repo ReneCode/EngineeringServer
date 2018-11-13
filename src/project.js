@@ -1,32 +1,36 @@
 const uuidv4 = require("uuid/v4");
+const Page = require("./page");
 
 class Project {
   constructor(name) {
     this.id = uuidv4();
     this.name = name;
+    this._pages = [];
+  }
+
+  addPage({ input }) {
+    const page = new Page(this.id, input.name);
+    this._pages.push(page);
+    return page;
+  }
+
+  deletePage({ input }) {
+    this._pages = this._pages.filter(p => p.id !== input.id);
+    return input.id;
+  }
+
+  pages() {
+    return this._pages;
+  }
+
+  page({ id }) {
+    try {
+      const page = this._pages.find(p => p.id === id);
+      return page;
+    } catch (ex) {
+      console.log(ex);
+    }
   }
 }
 
-class ProjectList {
-  constructor() {
-    this.projects = [{ id: "prjId", name: "new Project" }];
-  }
-
-  createProject(name) {
-    const p = new Project(name);
-    this.projects.push(p);
-    return p;
-  }
-
-  getProjects() {
-    return this.projects;
-  }
-
-  getProject(id) {
-    return this.projects.find(p => p.id === id);
-  }
-}
-
-const projectList = new ProjectList();
-
-module.exports = { Project, projectList };
+module.exports = Project;

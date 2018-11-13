@@ -27,7 +27,19 @@ const schema = buildSchema(`
 
   type Project {
     id: ID,
+    name: String,
+    addPage(input: AddPageInput): Page,
+    deletePage(input: DeletePageInput): ID,
+    pages(void: String): [Page]
+    page(id: ID!): Page
+  }
+
+
+  input AddPageInput {
     name: String
+  }
+  input DeletePageInput {
+    id: ID
   }
 
   input PageInput {

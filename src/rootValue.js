@@ -1,5 +1,5 @@
-const { projectList } = require("./project");
-const { pageList } = require("./page");
+const { projectList } = require("./projectList");
+const { pageList } = require("./pageList");
 const { graphicList } = require("./graphic");
 
 const rlog = (...args) => {
@@ -53,7 +53,9 @@ const rootValue = {
   updateGraphics: ({ input }) => {
     rlog("updateGraphics");
     return graphicList.updateGraphics(input);
-  }
+  },
+
+  deleteGraphic: ({ input }) => {}
 };
 
 module.exports = rootValue;
