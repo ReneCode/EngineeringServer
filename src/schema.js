@@ -12,7 +12,8 @@ const schema = buildSchema(`
   }
 
   type Mutation {
-    createProject(input: ProjectInput!): Project
+    createProject(input: CreateProjectInput!): Project
+    deleteProject(input: DeleteProjectInput!): ID
 
     createPage(input: PageInput!) : Page
     
@@ -21,8 +22,11 @@ const schema = buildSchema(`
     deleteGraphic(input: DeleteGraphicInput!): ID
   }
 
-  input ProjectInput {
-    name: String
+  input CreateProjectInput {
+    name: String!
+  }
+  input DeleteProjectInput {
+    id: ID!
   }
 
   type Project {

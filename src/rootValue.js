@@ -12,6 +12,11 @@ const rootValue = {
     return projectList.createProject(input.name);
   },
 
+  deleteProject: ({ input }) => {
+    rlog("deleteProject");
+    return projectList.deleteProject(input.id);
+  },
+
   projects: () => {
     rlog("projects");
     return projectList.getProjects();

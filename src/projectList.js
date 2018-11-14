@@ -13,6 +13,11 @@ class ProjectList {
     return p;
   }
 
+  deleteProject(id) {
+    this.projects = this.projects.filter(p => p.id !== id);
+    return id;
+  }
+
   getProjects() {
     return this.projects;
   }
