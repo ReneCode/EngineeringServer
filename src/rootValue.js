@@ -36,7 +36,14 @@ const rootValue = {
 
   createPage: ({ input }) => {
     rlog("createPage");
-    return pageList.createPage(input.projectId, input.name);
+    const project = projectList.getProject(input.projectId);
+    return project.createPage(input);
+  },
+
+  deletePage: ({ input }) => {
+    rlog("deletePage");
+    const project = projectList.getProject(input.projectId);
+    return project.deletePage(input);
   },
 
   // -----------

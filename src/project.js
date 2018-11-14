@@ -5,27 +5,23 @@ class Project {
   constructor(name) {
     this.id = uuidv4();
     this.name = name;
-    this._pages = [];
+    this.pages = [];
   }
 
-  addPage({ input }) {
+  createPage(input) {
     const page = new Page(this.id, input.name);
-    this._pages.push(page);
+    this.pages.push(page);
     return page;
   }
 
-  deletePage({ input }) {
-    this._pages = this._pages.filter(p => p.id !== input.id);
+  deletePage(input) {
+    this.pages = this.pages.filter(p => p.id !== input.id);
     return input.id;
   }
 
-  pages() {
-    return this._pages;
-  }
-
-  page({ id }) {
+  page(id) {
     try {
-      const page = this._pages.find(p => p.id === id);
+      const page = this.pages.find(p => p.id === id);
       return page;
     } catch (ex) {
       console.log(ex);
