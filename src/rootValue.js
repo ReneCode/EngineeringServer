@@ -28,10 +28,14 @@ const rootValue = {
 
   // --------
 
-  pages: args => {
-    rlog("pages:", args);
-    const { projectId } = args;
-    return pageList.getPages(projectId);
+  pages: ({ projectId }) => {
+    rlog("pages");
+    const project = projectList.getProject(projectId);
+    if (project) {
+      return project.pages;
+    } else {
+      return null;
+    }
   },
 
   createPage: ({ input }) => {

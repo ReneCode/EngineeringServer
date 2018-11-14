@@ -6,7 +6,6 @@ const schema = buildSchema(`
     project(id:ID!): Project
 
     pages(projectId: ID!): [Page],
-
     graphics(projectId: ID!, pageId: ID!): [Graphic]
 
   }
@@ -52,6 +51,7 @@ const schema = buildSchema(`
     projectId: ID,
     id: ID,
     name: String
+    graphics: [Graphic]
   }
 
   type Graphic {
@@ -71,11 +71,14 @@ const schema = buildSchema(`
 
   input UpdateGraphicInput {
     projectId: ID!,
+    pageId: ID!,
     id: ID!,
     content: String!
   }
 
   input DeleteGraphicInput {
+    projectId: ID!,
+    pageID: ID!,
     id: ID!
   }
 
