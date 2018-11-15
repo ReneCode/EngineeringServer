@@ -1,17 +1,19 @@
 import projectList from "./projectList";
 import Project from "./project";
 
+import * as I from "./interfaces";
+
 const rlog = (...args: any[]) => {
   console.log(...args);
 };
 
 const rootValue = {
-  createProject: ({ input }: { input: { name: string } }): Project => {
+  createProject: ({ input }: I.Input<I.CreateProjectInput>): Project => {
     rlog("createProject");
     return projectList.createProject(input.name);
   },
 
-  deleteProject: ({ input }: { input: { id: string } }): string => {
+  deleteProject: ({ input }: I.Input<I.DeleteProjectInput>): string => {
     rlog("deleteProject");
     return projectList.deleteProject(input.id);
   },
@@ -37,7 +39,7 @@ const rootValue = {
     }
   },
 
-  createPage: ({ input }: { input: { name: string; projectId: string } }) => {
+  createPage: ({ input }: I.Input<I.CreatePageInput>) => {
     rlog("createPage");
     const project = projectList.getProject(input.projectId);
     if (project) {
@@ -47,7 +49,7 @@ const rootValue = {
     }
   },
 
-  deletePage: ({ input }: { input: { id: string; projectId: string } }) => {
+  deletePage: ({ input }: I.Input<I.DeletePageInput>) => {
     rlog("deletePage");
     const project = projectList.getProject(input.projectId);
     if (project) {
