@@ -81,7 +81,7 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("content", content);
   });
 
-  it("delete Placement", async () => {
+  it("delete Placements", async () => {
     const type = "line";
     const content = "abcdesf";
     const placement = await createPlacement(projectId, pageId, type, content);
@@ -89,15 +89,17 @@ describe("placement", () => {
     const placements = await getPlacements(projectId, pageId);
     expect(placements).toHaveLength(1);
 
-    let mutation = `mutation M($input: DeletePlacementInput!) {
-      deletePlacement(input: $input) 
+    let mutation = `mutation M($input: [DeletePlacementInput]!) {
+      deletePlacements(input: $input) 
     }`;
     let variables = {
-      input: {
-        projectId: projectId,
-        pageId: pageId,
-        id: placementId
-      }
+      input: [
+        {
+          projectId: projectId,
+          pageId: pageId,
+          id: placementId
+        }
+      ]
     };
     const res = await gql(mutation, variables);
 

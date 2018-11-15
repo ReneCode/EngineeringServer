@@ -14,12 +14,12 @@ const schema = buildSchema(`
     createProject(input: CreateProjectInput!): Project
     deleteProject(input: DeleteProjectInput!): ID
 
-    createPage(input: CreatePageInput!) : Page
-    deletePage(input: DeletePageInput!) : ID
+    createPage(input: CreatePageInput!): Page
+    deletePage(input: DeletePageInput!): ID
     
     createPlacement(input: CreatePlacementInput!): Placement
-    updatePlacements(input: [UpdatePlacementInput]!):[ID]
-    deletePlacement(input: DeletePlacementInput!): ID
+    updatePlacements(input: [UpdatePlacementInput]!): [ID]
+    deletePlacements(input: [DeletePlacementInput]!): [ID]
   }
 
   input CreateProjectInput {

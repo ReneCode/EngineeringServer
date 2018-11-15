@@ -113,20 +113,22 @@ const rootValue = {
     return result;
   },
 
-  deletePlacement: ({
-    input
-  }: I.Input<I.DeletePlacementInput>): IdType | null => {
-    rlog("deletePlacement");
-    const project = projectList.getProject(input.projectId);
-    if (!project) {
-      return null;
-    }
-    const page = project.getPage(input.pageId);
-    if (!page) {
-      return null;
-    }
+  deletePlacements: ({ input }: I.Input<I.DeletePlacementInput[]>): any[] => {
+    rlog("deletePlacements");
+    const result = input.map(i => {
+      rlog("deleteOnePlacement");
+      const project = projectList.getProject(i.projectId);
+      if (!project) {
+        return null;
+      }
+      const page = project.getPage(i.pageId);
+      if (!page) {
+        return null;
+      }
 
-    return page.deletePlacement(input.id);
+      return page.deletePlacement(i.id);
+    });
+    return result;
   }
 };
 
