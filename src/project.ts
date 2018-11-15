@@ -10,7 +10,10 @@ class Project {
   constructor(name: string) {
     this.id = uuidv4();
     this.name = name;
-    this.pages = [];
+    this.pages = [
+      new Page(this.id, "new page A"),
+      new Page(this.id, "new page B")
+    ];
   }
 
   createPage(name: string): Page {
