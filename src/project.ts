@@ -1,8 +1,9 @@
 import * as uuidv4 from "uuid/v4";
 import Page from "./page";
+import { IdType } from "./types";
 
 class Project {
-  id: string;
+  id: IdType;
   name: string;
   pages: Page[] = [];
 
@@ -18,18 +19,22 @@ class Project {
     return page;
   }
 
-  deletePage(id: string): string {
+  deletePage(id: IdType): IdType {
     this.pages = this.pages.filter(p => p.id !== id);
     return id;
   }
 
-  page(id: string): Page | undefined {
+  getPage(id: IdType): Page | undefined {
     try {
       const page = this.pages.find(p => p.id === id);
       return page;
     } catch (ex) {
       console.log(ex);
     }
+  }
+
+  page({ id }: { id: IdType }): Page | undefined {
+    return this.getPage(id);
   }
 }
 

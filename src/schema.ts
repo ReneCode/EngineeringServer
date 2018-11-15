@@ -6,7 +6,7 @@ const schema = buildSchema(`
     project(id:ID!): Project
 
     pages(projectId: ID!): [Page],
-    graphics(projectId: ID!, pageId: ID!): [Graphic]
+    placement(projectId: ID!, pageId: ID!): [Placement]
 
   }
 
@@ -17,9 +17,9 @@ const schema = buildSchema(`
     createPage(input: CreatePageInput!) : Page
     deletePage(input: DeletePageInput!) : ID
     
-    createGraphic(input: CreateGraphicInput!): Graphic
-    updateGraphics(input: [UpdateGraphicInput]!): [Graphic]
-    deleteGraphic(input: DeleteGraphicInput!): ID
+    createPlacement(input: CreatePlacementInput!): Placement
+    updatePlacements(input: [UpdatePlacementInput]!): [Placement]
+    deletePlacement(input: DeletePlacementInput!): ID
   }
 
   input CreateProjectInput {
@@ -51,10 +51,10 @@ const schema = buildSchema(`
     projectId: ID,
     id: ID,
     name: String
-    graphics: [Graphic]
+    placements: [Placement]
   }
 
-  type Graphic {
+  type Placement {
     projectId: ID,
     pageId: ID,
     id: ID,
@@ -62,23 +62,23 @@ const schema = buildSchema(`
     content: String
   }
 
-  input CreateGraphicInput {
+  input CreatePlacementInput {
     projectId: ID!,
     pageId: ID!,
     type: String!,
     content: String!
   }
 
-  input UpdateGraphicInput {
+  input UpdatePlacementInput {
     projectId: ID!,
     pageId: ID!,
     id: ID!,
     content: String!
   }
 
-  input DeleteGraphicInput {
+  input DeletePlacementInput {
     projectId: ID!,
-    pageID: ID!,
+    pageId: ID!,
     id: ID!
   }
 

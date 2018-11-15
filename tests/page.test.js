@@ -56,6 +56,32 @@ describe("page", () => {
     expect(foundPage.name).toEqual(pageName);
   });
 
+  it.only("get one page", async () => {
+    const pageName = "one page";
+    const page = await createPage(projectId, pageName);
+    const pageId = page.id;
+    // get page
+    const query = `query Q($projectId: ID!, $pageId: ID!) {
+          project(id: $projectId) {
+            page(id: $pageId) {
+              id projectId, name
+            }
+          }
+        }`;
+    variables = {
+      projectId: projectId,
+      pageId: pageId
+    };
+    const res = await gql(query, variables);
+    expect(res.data).toBeTruthy();
+    expect(res.errors).toBeFalsy();
+    const newPage = res.data.project.page;
+    expect(newPage).toBeTruthy();
+    expect(newPage).toHaveProperty("id", pageId);
+    expect(newPage).toHaveProperty("projectId", projectId);
+    expect(newPage).toHaveProperty("name", pageName);
+  });
+
   it("delete Page", async () => {
     const pageName = "new page";
     const page = await createPage(projectId, pageName);

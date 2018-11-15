@@ -2,6 +2,9 @@ import projectList from "./projectList";
 import Project from "./project";
 
 import * as I from "./interfaces";
+import { IdType } from "./types";
+import Placement from "./placement";
+import Page from "./page";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
@@ -13,7 +16,7 @@ const rootValue = {
     return projectList.createProject(input.name);
   },
 
-  deleteProject: ({ input }: I.Input<I.DeleteProjectInput>): string => {
+  deleteProject: ({ input }: I.Input<I.DeleteProjectInput>): IdType => {
     rlog("deleteProject");
     return projectList.deleteProject(input.id);
   },
@@ -29,7 +32,7 @@ const rootValue = {
 
   // --------
 
-  pages: ({ projectId }: { projectId: string }) => {
+  pages: ({ projectId }: { projectId: string }): Page[] | null => {
     rlog("pages");
     const project = projectList.getProject(projectId);
     if (project) {
@@ -39,7 +42,7 @@ const rootValue = {
     }
   },
 
-  createPage: ({ input }: I.Input<I.CreatePageInput>) => {
+  createPage: ({ input }: I.Input<I.CreatePageInput>): Page | null => {
     rlog("createPage");
     const project = projectList.getProject(input.projectId);
     if (project) {
@@ -55,32 +58,63 @@ const rootValue = {
     if (project) {
       return project.deletePage(input.id);
     }
-  }
+  },
 
   // -----------
   /*
-  graphics: ({ projectId, pageId }) => {
+  placements: ({ projectId, pageId }) => {
     rlog("graphics");
     return graphicList.getGraphics(projectId, pageId);
   },
+*/
 
-  createGraphic: ({ input }) => {
-    rlog("createGraphic");
-    return graphicList.createGraphic(
-      input.projectId,
-      input.pageId,
-      input.type,
-      input.content
-    );
+  createPlacement: ({
+    input
+  }: I.Input<I.CreatePlacementInput>): Placement | null => {
+    rlog("createPlacement");
+    const project = projectList.getProject(input.projectId);
+    if (!project) {
+      return null;
+    }
+    const page = project.getPage(input.pageId);
+    if (!page) {
+      return null;
+    }
+
+    return page.createPlacement(input.type, input.content);
   },
 
-  updateGraphics: ({ input }) => {
-    rlog("updateGraphics");
-    return graphicList.updateGraphics(input);
+  updatePlacement: ({
+    input
+  }: I.Input<I.UpdatePlacementInput>): Placement | null => {
+    rlog("updatePlacement");
+    const project = projectList.getProject(input.projectId);
+    if (!project) {
+      return null;
+    }
+    const page = project.getPage(input.pageId);
+    if (!page) {
+      return null;
+    }
+
+    return page.updatePlacement(input.id, input.content);
   },
 
-  deleteGraphic: ({ input }) => {}
-  */
+  deletePlacement: ({
+    input
+  }: I.Input<I.DeletePlacementInput>): IdType | null => {
+    rlog("deletePlacement");
+    const project = projectList.getProject(input.projectId);
+    if (!project) {
+      return null;
+    }
+    const page = project.getPage(input.pageId);
+    if (!page) {
+      return null;
+    }
+
+    return page.deletePlacement(input.id);
+  }
 };
 
 export default rootValue;

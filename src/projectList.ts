@@ -1,4 +1,5 @@
 import Project from "./project";
+import { IdType } from "./types";
 
 class ProjectList {
   projects: Project[] = [];
@@ -13,7 +14,7 @@ class ProjectList {
     return p;
   }
 
-  deleteProject(id: string): string {
+  deleteProject(id: IdType): IdType {
     this.projects = this.projects.filter(p => p.id !== id);
     return id;
   }

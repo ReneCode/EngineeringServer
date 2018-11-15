@@ -41,6 +41,23 @@ const createPage = async (projectId, pageName) => {
   return page;
 };
 
+const getPage = async (projectId, pageId) => {
+  const query = `query Q($projectId: ID!, $pageId: ID!) {
+    project(id: $projectId) {
+      page(id: $pageId) {
+        id projectId, name
+      }
+    }
+  }`;
+  variables = {
+    projectId: projectId,
+    pageId: pageId
+  };
+  const res = await gql(query, variables);
+  const page = res.data.project.page;
+  return page;
+};
+
 const getPages = async projectId => {
   const query = `query project($id: ID!) {
     project(id: $id) {
@@ -52,6 +69,19 @@ const getPages = async projectId => {
   };
   const json = await gql(query, variables);
   return json.data.project.pages;
+};
+
+const deletePage = async (projectId, pageId) => {
+  let mutation = `mutation deletePage($input: DeletePageInput!) {
+    deletePage(input: $input) 
+  }`;
+  let variables = {
+    input: {
+      projectId: projectId,
+      id: pageId
+    }
+  };
+  await gql(mutation, variables);
 };
 
 const createProject = async projectName => {
@@ -86,5 +116,7 @@ module.exports = {
   createProject,
   deleteProject,
   createPage,
-  getPages
+  deletePage,
+  getPages,
+  getPage
 };

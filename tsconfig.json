@@ -4,6 +4,7 @@
     "target": "es6",
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
     "moduleResolution": "node",
     "isolatedModules": true,
     "sourceMap": true,

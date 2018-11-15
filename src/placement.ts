@@ -1,7 +1,20 @@
 const uuidv4 = require("uuid/v4");
 
-class Graphic {
-  constructor(projectId, pageId, type, content) {
+import { PlacementType } from "./types";
+
+class Placement {
+  projectId: string;
+  pageId: string;
+  id: string;
+  type: PlacementType = PlacementType.empty;
+  content: string;
+
+  constructor(
+    projectId: string,
+    pageId: string,
+    type: PlacementType,
+    content: string
+  ) {
     this.projectId = projectId;
     this.pageId = pageId;
     this.type = type;
@@ -9,6 +22,10 @@ class Graphic {
     this.content = content;
   }
 }
+
+export default Placement;
+
+/*
 
 class GraphicList {
   constructor() {
@@ -72,3 +89,4 @@ class GraphicList {
 const graphicList = new GraphicList();
 
 module.exports = { Graphic, graphicList };
+*/
