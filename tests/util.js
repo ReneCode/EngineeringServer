@@ -110,6 +110,62 @@ const deleteProject = async projectId => {
   await gql(mutation, variables);
 };
 
+const createPlacement = async (projectId, pageId, type, content) => {
+  let mutation = `mutation M($input: CreatePlacementInput!) {
+    createPlacement(input: $input) { id projectId pageId, type content }
+  }`;
+  let variables = {
+    input: {
+      projectId,
+      pageId,
+      type,
+      content
+    }
+  };
+  let res = await gql(mutation, variables);
+  return res.data.createPlacement;
+};
+
+const getPlacements = async (projectId, pageId) => {
+  // get placement
+  const query = `query Q($projectId: ID!, $pageId: ID!) {
+        project(id: $projectId) {
+          page(id: $pageId) {
+            placements {
+              projectId pageId id type content
+            }
+          }
+        }
+      }`;
+  variables = {
+    projectId,
+    pageId
+  };
+  res = await gql(query, variables);
+  expect(res.data).toBeTruthy();
+  expect(res.errors).toBeFalsy();
+  data = res.data;
+  const placements = res.data.project.page.placements;
+  return placements;
+};
+
+const updateOnePlacement = async (projectId, pageId, id, content) => {
+  const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
+    updatePlacements(input: $input) 
+  }`;
+  const variables = {
+    input: [
+      {
+        projectId: projectId,
+        pageId: pageId,
+        id: placementId,
+        content: newContent
+      }
+    ]
+  };
+  await gql(mutation, variables);
+};
+
 module.exports = {
   gql,
   getProjects,
@@ -118,5 +174,8 @@ module.exports = {
   createPage,
   deletePage,
   getPages,
-  getPage
+  getPage,
+  createPlacement,
+  getPlacements,
+  updateOnePlacement
 };

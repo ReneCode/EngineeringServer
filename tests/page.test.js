@@ -56,7 +56,7 @@ describe("page", () => {
     expect(foundPage.name).toEqual(pageName);
   });
 
-  it.only("get one page", async () => {
+  it("get one page", async () => {
     const pageName = "one page";
     const page = await createPage(projectId, pageName);
     const pageId = page.id;

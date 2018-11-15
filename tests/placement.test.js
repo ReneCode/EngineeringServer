@@ -3,8 +3,9 @@ const {
   createProject,
   deleteProject,
   createPage,
-  getPages,
-  deletePage
+  deletePage,
+  createPlacement,
+  getPlacements
 } = require("./util");
 
 describe("placement", () => {
@@ -80,24 +81,57 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("content", content);
   });
 
-  it.skip("delete Page", async () => {
-    const pageName = "new page";
-    const page = await createPage(projectId, pageName);
-    let pages = await getPages(projectId);
-    expect(pages).toHaveLength(1);
+  it("delete Placement", async () => {
+    const type = "line";
+    const content = "abcdesf";
+    const placement = await createPlacement(projectId, pageId, type, content);
+    const placementId = placement.id;
+    const placements = await getPlacements(projectId, pageId);
+    expect(placements).toHaveLength(1);
 
-    let mutation = `mutation deletePage($input: DeletePageInput!) {
-      deletePage(input: $input) 
+    let mutation = `mutation M($input: DeletePlacementInput!) {
+      deletePlacement(input: $input) 
     }`;
     let variables = {
       input: {
         projectId: projectId,
-        id: page.id
+        pageId: pageId,
+        id: placementId
       }
     };
     const res = await gql(mutation, variables);
 
-    pages = await getPages(projectId);
-    expect(pages).toHaveLength(0);
+    const newPlacements = await getPlacements(projectId, pageId);
+    expect(newPlacements).toHaveLength(0);
+  });
+
+  it("update placements", async () => {
+    const type = "line";
+    const content = "123456";
+    const placement = await createPlacement(projectId, pageId, type, content);
+    const placementId = placement.id;
+    const newContent = "abcdef";
+
+    const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
+      updatePlacements(input: $input) 
+    }`;
+    const variables = {
+      input: [
+        {
+          projectId: projectId,
+          pageId: pageId,
+          id: placementId,
+          content: newContent
+        }
+      ]
+    };
+    const res = await gql(mutation, variables);
+    expect(res.data).toBeTruthy();
+    expect(res.errors).toBeFalsy();
+
+    const newPlacements = await getPlacements(projectId, pageId);
+    expect(newPlacements).toHaveLength(1);
+    expect(newPlacements[0]).toHaveProperty("id", placementId);
+    expect(newPlacements[0]).toHaveProperty("content", newContent);
   });
 });
