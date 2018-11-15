@@ -8,6 +8,10 @@ install:
 
 script:
   - scripts/prebuild.sh
+  - yarn dist
+
+before_deploy:
+  - cd dist
 
 deploy:
   provider: azure_web_apps
