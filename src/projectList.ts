@@ -1,32 +1,32 @@
-const uuidv4 = require("uuid/v4");
-
-const Project = require("./project");
+import Project from "./project";
 
 class ProjectList {
+  projects: Project[] = [];
+
   constructor() {
     this.projects = [new Project("new Project")];
   }
 
-  createProject(name) {
+  createProject(name: string): Project {
     const p = new Project(name);
     this.projects.push(p);
     return p;
   }
 
-  deleteProject(id) {
+  deleteProject(id: string): string {
     this.projects = this.projects.filter(p => p.id !== id);
     return id;
   }
 
-  getProjects() {
+  getProjects(): Project[] {
     return this.projects;
   }
 
-  getProject(id) {
+  getProject(id: string): Project | undefined {
     return this.projects.find(p => p.id === id);
   }
 }
 
 const projectList = new ProjectList();
 
-module.exports = { projectList };
+export default projectList;

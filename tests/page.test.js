@@ -4,7 +4,7 @@ const {
   deleteProject,
   createPage,
   getPages,
-  deltePage
+  deletePage
 } = require("./util");
 
 describe("page", () => {

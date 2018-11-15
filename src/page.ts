@@ -1,11 +1,15 @@
 const uuidv4 = require("uuid/v4");
 
 class Page {
-  constructor(projectId, name) {
+  id: string;
+  projectId: string;
+  name: string;
+
+  constructor(projectId: string, name: string) {
     this.id = uuidv4();
     this.projectId = projectId;
     this.name = name;
   }
 }
 
-module.exports = Page;
+export default Page;

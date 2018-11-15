@@ -1,8 +1,9 @@
-const express = require("express");
+import express = require("express");
 const cors = require("cors");
 const graphqlHTTP = require("express-graphql");
-const schema = require("./schema");
-const rootValue = require("./rootValue");
+
+import schema from "./schema";
+import rootValue from "./rootValue";
 
 const app = express();
 app.use(cors());
@@ -15,7 +16,7 @@ app.use(
     graphiql: true
   })
 );
-app.get("/", (req, res) => {
+app.get("/", (req: any, res: any) => {
   res.send("hi engineering server. Try /graphql");
 });
 

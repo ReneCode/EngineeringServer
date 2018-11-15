@@ -1,34 +1,33 @@
-const { projectList } = require("./projectList");
-const { pageList } = require("./pageList");
-const { graphicList } = require("./graphic");
+import projectList from "./projectList";
+import Project from "./project";
 
-const rlog = (...args) => {
+const rlog = (...args: any[]) => {
   console.log(...args);
 };
 
 const rootValue = {
-  createProject: ({ input }) => {
+  createProject: ({ input }: { input: { name: string } }): Project => {
     rlog("createProject");
     return projectList.createProject(input.name);
   },
 
-  deleteProject: ({ input }) => {
+  deleteProject: ({ input }: { input: { id: string } }): string => {
     rlog("deleteProject");
     return projectList.deleteProject(input.id);
   },
 
-  projects: () => {
+  projects: (): Project[] => {
     rlog("projects");
     return projectList.getProjects();
   },
 
-  project: ({ id }) => {
+  project: ({ id }: { id: string }): Project | undefined => {
     return projectList.getProject(id);
   },
 
   // --------
 
-  pages: ({ projectId }) => {
+  pages: ({ projectId }: { projectId: string }) => {
     rlog("pages");
     const project = projectList.getProject(projectId);
     if (project) {
@@ -38,19 +37,26 @@ const rootValue = {
     }
   },
 
-  createPage: ({ input }) => {
+  createPage: ({ input }: { input: { name: string; projectId: string } }) => {
     rlog("createPage");
     const project = projectList.getProject(input.projectId);
-    return project.createPage(input);
+    if (project) {
+      return project.createPage(input.name);
+    } else {
+      return null;
+    }
   },
 
-  deletePage: ({ input }) => {
+  deletePage: ({ input }: { input: { id: string; projectId: string } }) => {
     rlog("deletePage");
     const project = projectList.getProject(input.projectId);
-    return project.deletePage(input);
-  },
+    if (project) {
+      return project.deletePage(input.id);
+    }
+  }
 
   // -----------
+  /*
   graphics: ({ projectId, pageId }) => {
     rlog("graphics");
     return graphicList.getGraphics(projectId, pageId);
@@ -72,6 +78,7 @@ const rootValue = {
   },
 
   deleteGraphic: ({ input }) => {}
+  */
 };
 
-module.exports = rootValue;
+export default rootValue;
