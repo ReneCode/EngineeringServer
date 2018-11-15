@@ -112,7 +112,7 @@ describe("placement", () => {
     const placementId = placement.id;
     const newContent = "abcdef";
 
-    const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
+    const mutation = `mutation updatePlacements($input: [UpdatePlacementInput]!) {
       updatePlacements(input: $input) 
     }`;
     const variables = {

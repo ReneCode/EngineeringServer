@@ -18,7 +18,7 @@ const schema = buildSchema(`
     deletePage(input: DeletePageInput!) : ID
     
     createPlacement(input: CreatePlacementInput!): Placement
-    updatePlacements(input: [UpdatePlacementsInput]!):[ID]
+    updatePlacements(input: [UpdatePlacementInput]!):[ID]
     deletePlacement(input: DeletePlacementInput!): ID
   }
 
@@ -69,7 +69,7 @@ const schema = buildSchema(`
     content: String!
   }
 
-  input UpdatePlacementsInput {
+  input UpdatePlacementInput {
     projectId: ID!,
     pageId: ID!,
     id: ID!,
