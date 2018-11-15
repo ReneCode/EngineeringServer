@@ -4,6 +4,7 @@ const graphqlHTTP = require("express-graphql");
 
 import schema from "./schema";
 import rootValue from "./rootValue";
+import initData from "./initData";
 
 const app = express();
 app.use(cors());
@@ -22,5 +23,6 @@ app.get("/", (req: any, res: any) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
+  initData();
   console.log("app listening on port:", port);
 });
