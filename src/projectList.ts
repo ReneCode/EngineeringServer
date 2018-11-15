@@ -5,7 +5,7 @@ class ProjectList {
   projects: Project[] = [];
 
   constructor() {
-    this.projects = [new Project("new Project")];
+    this.projects = [];
   }
 
   createProject(name: string): Project {
