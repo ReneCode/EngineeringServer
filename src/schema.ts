@@ -6,7 +6,7 @@ const schema = buildSchema(`
     project(id:ID!): Project
 
     pages(projectId: ID!): [Page],
-    placement(projectId: ID!, pageId: ID!): [Placement]
+    placements(projectId: ID!, pageId: ID!): [Placement]
 
   }
 

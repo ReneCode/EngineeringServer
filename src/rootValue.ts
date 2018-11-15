@@ -61,12 +61,23 @@ const rootValue = {
   },
 
   // -----------
-  /*
-  placements: ({ projectId, pageId }) => {
-    rlog("graphics");
-    return graphicList.getGraphics(projectId, pageId);
+  placements: ({
+    projectId,
+    pageId
+  }: {
+    projectId: IdType;
+    pageId: IdType;
+  }): Placement[] => {
+    rlog("placements");
+    const project = projectList.getProject(projectId);
+    if (project) {
+      const page = project.getPage(pageId);
+      if (page) {
+        return page.placements;
+      }
+    }
+    return [];
   },
-*/
 
   createPlacement: ({
     input
@@ -84,7 +95,7 @@ const rootValue = {
     return page.createPlacement(input.type, input.content);
   },
 
-  updatePlacements: ({ input }: I.Input<[I.UpdatePlacementInput]>) => {
+  updatePlacements: ({ input }: I.Input<I.UpdatePlacementInput[]>): any[] => {
     rlog("updatePlacements");
 
     const result = input.map(i => {

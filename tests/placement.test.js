@@ -134,4 +134,35 @@ describe("placement", () => {
     expect(newPlacements[0]).toHaveProperty("id", placementId);
     expect(newPlacements[0]).toHaveProperty("content", newContent);
   });
+
+  it("placements", async () => {
+    const type = "line";
+    const content = "123456";
+    const placement = await createPlacement(projectId, pageId, type, content);
+    const placementId = placement.id;
+
+    const query = `query Q($projectId: ID!, $pageId: ID!) {
+      placements(projectId: $projectId, pageId: $pageId) {
+            projectId pageId id type content
+      }
+    }`;
+    variables = {
+      projectId,
+      pageId
+    };
+    const res = await gql(query, variables);
+    expect(res.data).toBeTruthy();
+    expect(res.errors).toBeFalsy();
+
+    const placements = res.data.placements;
+    expect(placements).toBeTruthy();
+    expect(placements).toHaveLength(1);
+
+    const foundPlacement = placements[0];
+    expect(foundPlacement).toHaveProperty("projectId", projectId);
+    expect(foundPlacement).toHaveProperty("pageId", pageId);
+    expect(foundPlacement).toHaveProperty("id", placementId);
+    expect(foundPlacement).toHaveProperty("type", type);
+    expect(foundPlacement).toHaveProperty("content", content);
+  });
 });
