@@ -5,6 +5,8 @@ import * as I from "./interfaces";
 import { IdType } from "./types";
 import Placement from "./placement";
 import Page from "./page";
+import elementList from "./elementList";
+import Element from "./element";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
@@ -129,6 +131,28 @@ const rootValue = {
       return page.deletePlacement(i.id);
     });
     return result;
+  },
+
+  // ---------------
+
+  symbols: () => {
+    rlog("symbols");
+    return elementList.elements;
+  },
+
+  createSymbol: ({ input }: I.Input<I.CreateSymbolInput>): Element => {
+    rlog("createElement");
+    return elementList.createElement(input.name, input.content);
+  },
+
+  updateSymbol: ({ input }: I.Input<I.UpdateSymbolInput>): IdType => {
+    rlog("updateElement");
+    return elementList.updateElement(input.id, input.name, input.content);
+  },
+
+  deleteSymbol: ({ input }: I.Input<I.DeleteSymbolInput>): IdType => {
+    rlog("updateElement");
+    return elementList.deleteElement(input.id);
   }
 };
 

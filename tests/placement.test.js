@@ -29,17 +29,17 @@ describe("placement", () => {
     // create new placement
 
     const type = "line";
-    const content = "abc-xyz";
+    const graphic = "abc-xyz";
 
     let mutation = `mutation createPlacement($input: CreatePlacementInput!) {
-      createPlacement(input: $input) { id projectId pageId, type content }
+      createPlacement(input: $input) { id projectId pageId, type graphic }
     }`;
     let variables = {
       input: {
         projectId: projectId,
         pageId: pageId,
         type,
-        content
+        graphic
       }
     };
     let res = await gql(mutation, variables);
@@ -50,14 +50,14 @@ describe("placement", () => {
     expect(placement).not.toBeNull();
     const placementId = placement.id;
     expect(placement.type).toBe(type);
-    expect(placement.content).toBe(content);
+    expect(placement.graphic).toBe(graphic);
 
     // get placement
     const query = `query Q($projectId: ID!, $pageId: ID!) {
       project(id: $projectId) {
         page(id: $pageId) {
           placements {
-            projectId pageId id type content
+            projectId pageId id type graphic
           }
         }
       }
@@ -78,13 +78,13 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("pageId", pageId);
     expect(foundPlacement).toHaveProperty("id", placementId);
     expect(foundPlacement).toHaveProperty("type", type);
-    expect(foundPlacement).toHaveProperty("content", content);
+    expect(foundPlacement).toHaveProperty("graphic", graphic);
   });
 
   it("delete Placements", async () => {
     const type = "line";
-    const content = "abcdesf";
-    const placement = await createPlacement(projectId, pageId, type, content);
+    const graphic = "abcdesf";
+    const placement = await createPlacement(projectId, pageId, type, graphic);
     const placementId = placement.id;
     const placements = await getPlacements(projectId, pageId);
     expect(placements).toHaveLength(1);
@@ -109,10 +109,10 @@ describe("placement", () => {
 
   it("update placements", async () => {
     const type = "line";
-    const content = "123456";
-    const placement = await createPlacement(projectId, pageId, type, content);
+    const graphic = "123456";
+    const placement = await createPlacement(projectId, pageId, type, graphic);
     const placementId = placement.id;
-    const newContent = "abcdef";
+    const newGraphic = "abcdef";
 
     const mutation = `mutation updatePlacements($input: [UpdatePlacementInput]!) {
       updatePlacements(input: $input) 
@@ -123,7 +123,7 @@ describe("placement", () => {
           projectId: projectId,
           pageId: pageId,
           id: placementId,
-          content: newContent
+          graphic: newGraphic
         }
       ]
     };
@@ -134,18 +134,18 @@ describe("placement", () => {
     const newPlacements = await getPlacements(projectId, pageId);
     expect(newPlacements).toHaveLength(1);
     expect(newPlacements[0]).toHaveProperty("id", placementId);
-    expect(newPlacements[0]).toHaveProperty("content", newContent);
+    expect(newPlacements[0]).toHaveProperty("graphic", newGraphic);
   });
 
   it("placements", async () => {
     const type = "line";
-    const content = "123456";
-    const placement = await createPlacement(projectId, pageId, type, content);
+    const graphic = "123456";
+    const placement = await createPlacement(projectId, pageId, type, graphic);
     const placementId = placement.id;
 
     const query = `query Q($projectId: ID!, $pageId: ID!) {
       placements(projectId: $projectId, pageId: $pageId) {
-            projectId pageId id type content
+            projectId pageId id type graphic
       }
     }`;
     variables = {
@@ -165,6 +165,6 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("pageId", pageId);
     expect(foundPlacement).toHaveProperty("id", placementId);
     expect(foundPlacement).toHaveProperty("type", type);
-    expect(foundPlacement).toHaveProperty("content", content);
+    expect(foundPlacement).toHaveProperty("graphic", graphic);
   });
 });

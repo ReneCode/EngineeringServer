@@ -40,3 +40,18 @@ export interface UpdatePlacementInput {
   id: IdType;
   graphic: string;
 }
+
+export interface CreateSymbolInput {
+  name: string;
+  content: string;
+}
+
+export interface DeleteSymbolInput {
+  id: string;
+}
+
+export interface UpdateSymbolInput {
+  id: string;
+  name: string;
+  content: string;
+}

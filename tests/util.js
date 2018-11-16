@@ -110,16 +110,16 @@ const deleteProject = async projectId => {
   await gql(mutation, variables);
 };
 
-const createPlacement = async (projectId, pageId, type, content) => {
+const createPlacement = async (projectId, pageId, type, graphic) => {
   let mutation = `mutation M($input: CreatePlacementInput!) {
-    createPlacement(input: $input) { id projectId pageId, type content }
+    createPlacement(input: $input) { id projectId pageId, type graphic }
   }`;
   let variables = {
     input: {
       projectId,
       pageId,
       type,
-      content
+      graphic
     }
   };
   let res = await gql(mutation, variables);
@@ -132,7 +132,7 @@ const getPlacements = async (projectId, pageId) => {
         project(id: $projectId) {
           page(id: $pageId) {
             placements {
-              projectId pageId id type content
+              projectId pageId id type graphic
             }
           }
         }
@@ -149,7 +149,7 @@ const getPlacements = async (projectId, pageId) => {
   return placements;
 };
 
-const updateOnePlacement = async (projectId, pageId, id, content) => {
+const updateOnePlacement = async (projectId, pageId, id, newGraphic) => {
   const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
     updatePlacements(input: $input) 
   }`;
@@ -159,7 +159,7 @@ const updateOnePlacement = async (projectId, pageId, id, content) => {
         projectId: projectId,
         pageId: pageId,
         id: placementId,
-        content: newContent
+        graphic: newGraphic
       }
     ]
   };
