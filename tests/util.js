@@ -149,7 +149,12 @@ const getPlacements = async (projectId, pageId) => {
   return placements;
 };
 
-const updateOnePlacement = async (projectId, pageId, id, newGraphic) => {
+const updateOnePlacement = async (
+  projectId,
+  pageId,
+  placementId,
+  newGraphic
+) => {
   const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
     updatePlacements(input: $input) 
   }`;
@@ -166,6 +171,67 @@ const updateOnePlacement = async (projectId, pageId, id, newGraphic) => {
   await gql(mutation, variables);
 };
 
+const createElement = async (projectId, type, name, content) => {
+  let mutation = `mutation createElement($input: CreateElementInput!) {
+    createElement(input: $input) { projectId id name type content }
+  }`;
+  let variables = {
+    input: {
+      projectId,
+      type,
+      name,
+      content
+    }
+  };
+  let res = await gql(mutation, variables);
+  return res.data.createElement;
+};
+
+const getElements = async projectId => {
+  const query = `query Q($projectId: ID!) {
+        project(id: $projectId) {
+          elements { projectId id name type content }
+        }
+      }`;
+  variables = {
+    projectId
+  };
+  res = await gql(query, variables);
+  expect(res.data).toBeTruthy();
+  expect(res.errors).toBeFalsy();
+  return res.data.project.elements;
+};
+
+const deleteElement = async (projectId, elementId) => {
+  let mutation = `mutation deleteElement($input: DeleteElementInput!) {
+    deleteElement(input: $input) 
+  }`;
+  let variables = {
+    input: {
+      projectId: projectId,
+      id: elementId
+    }
+  };
+  const res = await gql(mutation, variables);
+};
+
+const updateElement = async (projectId, elementId, type, name, content) => {
+  let mutation = `mutation UpdateElement($input: UpdateElementInput!) {
+    updateElement(input: $input) 
+  }`;
+  let variables = {
+    input: {
+      projectId,
+      id: elementId,
+      type,
+      name,
+      content
+    }
+  };
+  let res = await gql(mutation, variables);
+  return res.data.updateElement;
+};
+
 module.exports = {
   gql,
   getProjects,
@@ -177,5 +243,9 @@ module.exports = {
   getPage,
   createPlacement,
   getPlacements,
-  updateOnePlacement
+  updateOnePlacement,
+  createElement,
+  getElements,
+  deleteElement,
+  updateElement
 };

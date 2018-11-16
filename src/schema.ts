@@ -8,7 +8,7 @@ const schema = buildSchema(`
     pages(projectId: ID!): [Page],
     placements(projectId: ID!, pageId: ID!): [Placement]
 
-    elements: [Element]
+    elements(projectID: ID!, type: String!, name: String!): [Element]
   }
 
   type Mutation {
@@ -24,7 +24,7 @@ const schema = buildSchema(`
 
     createElement(input: CreateElementInput!): Element
     updateElement(input: UpdateElementInput!): ID
-    deleteElement(Input: DeleteElementInput!): ID
+    deleteElement(input: DeleteElementInput!): ID
   }
 
   input CreateProjectInput {
@@ -37,8 +37,10 @@ const schema = buildSchema(`
   type Project {
     id: ID,
     name: String,
-    pages: [Page]
-    page(id: ID!): Page
+    pages: [Page],
+    page(id: ID!): Page,
+
+    elements: [Element]
   }
 
 
@@ -88,24 +90,31 @@ const schema = buildSchema(`
   }
 
   type Element {
+    projectId: ID
+    id: ID
+    type: String,
     name: String,
     content: String,
-    id: ID!
   }
 
   input CreateElementInput {
+    projectId: ID!,
+    type: String!,
     name: String!,
-    content: String
+    content: String!
   }
 
   input DeleteElementInput {
+    projectId: ID!,
     id: ID!
   }
 
   input UpdateElementInput {
+    projectId: ID!,
     id: ID!,
-    name: String,
-    content: String
+    type: String!,
+    name: String!,
+    content: String!
   }
 
 

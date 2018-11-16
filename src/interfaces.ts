@@ -41,17 +41,22 @@ export interface UpdatePlacementInput {
   graphic: string;
 }
 
-export interface CreateSymbolInput {
+export interface CreateElementInput {
+  projectId: IdType;
+  type: string;
   name: string;
   content: string;
 }
 
-export interface DeleteSymbolInput {
+export interface DeleteElementInput {
+  projectId: IdType;
   id: string;
 }
 
-export interface UpdateSymbolInput {
+export interface UpdateElementInput {
+  projectId: IdType;
   id: string;
+  type: string;
   name: string;
   content: string;
 }

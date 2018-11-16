@@ -1,16 +1,17 @@
 import * as uuidv4 from "uuid/v4";
 import Page from "./page";
 import { IdType } from "./types";
+import Element from "./element";
 
 class Project {
   id: IdType;
   name: string;
   pages: Page[] = [];
+  elements: Element[] = [];
 
   constructor(name: string) {
     this.id = uuidv4();
     this.name = name;
-    this.pages = [];
   }
 
   createPage(name: string): Page {
@@ -35,6 +36,38 @@ class Project {
 
   page({ id }: { id: IdType }): Page | undefined {
     return this.getPage(id);
+  }
+
+  createElement(type: string, name: string, content: string): Element {
+    const symbol = new Element(this.id, type, name, content);
+    this.elements.push(symbol);
+    return symbol;
+  }
+
+  deleteElement(id: IdType): IdType {
+    this.elements = this.elements.filter(s => s.id !== id);
+    return id;
+  }
+
+  updateElement(
+    id: IdType,
+    type: string,
+    name: string,
+    content: string
+  ): IdType {
+    this.elements = this.elements.map(s => {
+      if (s.id === id) {
+        return {
+          ...s,
+          type,
+          name,
+          content
+        };
+      } else {
+        return s;
+      }
+    });
+    return id;
   }
 }
 

@@ -5,7 +5,6 @@ import * as I from "./interfaces";
 import { IdType } from "./types";
 import Placement from "./placement";
 import Page from "./page";
-import elementList from "./elementList";
 import Element from "./element";
 
 const rlog = (...args: any[]) => {
@@ -135,24 +134,46 @@ const rootValue = {
 
   // ---------------
 
-  symbols: () => {
-    rlog("symbols");
-    return elementList.elements;
+  elements: (projectId: IdType, type: string): Element[] | null => {
+    rlog("elements");
+    const project = projectList.getProject(projectId);
+    if (!project) {
+      return null;
+    }
+    // TODO
+    return null;
   },
 
-  createSymbol: ({ input }: I.Input<I.CreateSymbolInput>): Element => {
+  createElement: ({ input }: I.Input<I.CreateElementInput>): Element | null => {
     rlog("createElement");
-    return elementList.createElement(input.name, input.content);
+    const project = projectList.getProject(input.projectId);
+    if (project) {
+      return project.createElement(input.type, input.name, input.content);
+    }
+    return null;
   },
 
-  updateSymbol: ({ input }: I.Input<I.UpdateSymbolInput>): IdType => {
+  updateElement: ({ input }: I.Input<I.UpdateElementInput>): IdType | null => {
     rlog("updateElement");
-    return elementList.updateElement(input.id, input.name, input.content);
+    const project = projectList.getProject(input.projectId);
+    if (project) {
+      return project.updateElement(
+        input.id,
+        input.type,
+        input.name,
+        input.content
+      );
+    }
+    return null;
   },
 
-  deleteSymbol: ({ input }: I.Input<I.DeleteSymbolInput>): IdType => {
+  deleteElement: ({ input }: I.Input<I.DeleteElementInput>): IdType | null => {
     rlog("updateElement");
-    return elementList.deleteElement(input.id);
+    const project = projectList.getProject(input.projectId);
+    if (project) {
+      return project.deleteElement(input.id);
+    }
+    return null;
   }
 };
 
