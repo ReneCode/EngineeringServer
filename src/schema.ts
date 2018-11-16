@@ -117,9 +117,6 @@ const schema = buildSchema(`
     content: String!
   }
 
-
-
-
 `);
 
 export default schema;
