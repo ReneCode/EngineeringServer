@@ -26,7 +26,7 @@ export interface CreatePlacementInput {
   projectId: IdType;
   pageId: IdType;
   type: PlacementType;
-  content: string;
+  graphic: string;
 }
 export interface DeletePlacementInput {
   projectId: IdType;
@@ -38,5 +38,5 @@ export interface UpdatePlacementInput {
   projectId: IdType;
   pageId: IdType;
   id: IdType;
-  content: string;
+  graphic: string;
 }

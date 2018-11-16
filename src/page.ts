@@ -15,8 +15,8 @@ class Page {
     this.name = name;
   }
 
-  createPlacement(type: PlacementType, content: string): Placement {
-    const pl = new Placement(this.projectId, this.id, type, content);
+  createPlacement(type: PlacementType, graphic: string): Placement {
+    const pl = new Placement(this.projectId, this.id, type, graphic);
     this.placements = this.placements.concat(pl);
     return pl;
   }
@@ -26,14 +26,14 @@ class Page {
     return id;
   }
 
-  updatePlacement(id: IdType, content: string): IdType {
+  updatePlacement(id: IdType, graphic: string): IdType {
     this.placements = this.placements.map(p => {
       if (p.id !== id) {
         return p;
       } else {
         return {
           ...p,
-          content: content
+          graphic: graphic
         };
       }
     });

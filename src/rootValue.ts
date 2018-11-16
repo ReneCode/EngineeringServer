@@ -92,7 +92,7 @@ const rootValue = {
       return null;
     }
 
-    return page.createPlacement(input.type, input.content);
+    return page.createPlacement(input.type, input.graphic);
   },
 
   updatePlacements: ({ input }: I.Input<I.UpdatePlacementInput[]>): any[] => {
@@ -108,7 +108,7 @@ const rootValue = {
       if (!page) {
         return null;
       }
-      return page.updatePlacement(i.id, i.content);
+      return page.updatePlacement(i.id, i.graphic);
     });
     return result;
   },

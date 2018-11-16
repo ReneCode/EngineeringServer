@@ -7,19 +7,19 @@ class Placement {
   pageId: string;
   id: string;
   type: PlacementType = PlacementType.empty;
-  content: string;
+  graphic: string;
 
   constructor(
     projectId: string,
     pageId: string,
     type: PlacementType,
-    content: string
+    graphic: string
   ) {
     this.projectId = projectId;
     this.pageId = pageId;
     this.type = type;
     this.id = uuidv4();
-    this.content = content;
+    this.graphic = graphic;
   }
 }
 
