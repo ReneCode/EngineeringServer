@@ -110,20 +110,23 @@ const deleteProject = async projectId => {
   await gql(mutation, variables);
 };
 
-const createPlacement = async (projectId, pageId, type, graphic) => {
+const createPlacement = async (projectId, pageId, graphic) => {
   let mutation = `mutation M($input: CreatePlacementInput!) {
-    createPlacement(input: $input) { id projectId pageId, type graphic }
+    createPlacement(input: $input) { id projectId pageId graphic }
   }`;
   let variables = {
     input: {
       projectId,
       pageId,
-      type,
       graphic
     }
   };
-  let res = await gql(mutation, variables);
-  return res.data.createPlacement;
+  try {
+    let res = await gql(mutation, variables);
+    return res.data.createPlacement;
+  } catch (ex) {
+    console.log("Exception:", ex);
+  }
 };
 
 const getPlacements = async (projectId, pageId) => {
@@ -132,7 +135,7 @@ const getPlacements = async (projectId, pageId) => {
         project(id: $projectId) {
           page(id: $pageId) {
             placements {
-              projectId pageId id type graphic
+              projectId pageId id graphic
             }
           }
         }

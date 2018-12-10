@@ -28,17 +28,15 @@ describe("placement", () => {
   it("createPlacement", async () => {
     // create new placement
 
-    const type = "line";
     const graphic = "abc-xyz";
 
     let mutation = `mutation createPlacement($input: CreatePlacementInput!) {
-      createPlacement(input: $input) { id projectId pageId, type graphic }
+      createPlacement(input: $input) { id projectId pageId graphic }
     }`;
     let variables = {
       input: {
         projectId: projectId,
         pageId: pageId,
-        type,
         graphic
       }
     };
@@ -49,7 +47,6 @@ describe("placement", () => {
     const placement = data.createPlacement;
     expect(placement).not.toBeNull();
     const placementId = placement.id;
-    expect(placement.type).toBe(type);
     expect(placement.graphic).toBe(graphic);
 
     // get placement
@@ -57,7 +54,7 @@ describe("placement", () => {
       project(id: $projectId) {
         page(id: $pageId) {
           placements {
-            projectId pageId id type graphic
+            projectId pageId id graphic
           }
         }
       }
@@ -77,14 +74,12 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("projectId", projectId);
     expect(foundPlacement).toHaveProperty("pageId", pageId);
     expect(foundPlacement).toHaveProperty("id", placementId);
-    expect(foundPlacement).toHaveProperty("type", type);
     expect(foundPlacement).toHaveProperty("graphic", graphic);
   });
 
   it("delete Placements", async () => {
-    const type = "line";
     const graphic = "abcdesf";
-    const placement = await createPlacement(projectId, pageId, type, graphic);
+    const placement = await createPlacement(projectId, pageId, graphic);
     const placementId = placement.id;
     const placements = await getPlacements(projectId, pageId);
     expect(placements).toHaveLength(1);
@@ -108,9 +103,8 @@ describe("placement", () => {
   });
 
   it("update placements", async () => {
-    const type = "line";
     const graphic = "123456";
-    const placement = await createPlacement(projectId, pageId, type, graphic);
+    const placement = await createPlacement(projectId, pageId, graphic);
     const placementId = placement.id;
     const newGraphic = "abcdef";
 
@@ -138,14 +132,13 @@ describe("placement", () => {
   });
 
   it("placements", async () => {
-    const type = "line";
     const graphic = "123456";
-    const placement = await createPlacement(projectId, pageId, type, graphic);
+    const placement = await createPlacement(projectId, pageId, graphic);
     const placementId = placement.id;
 
     const query = `query Q($projectId: ID!, $pageId: ID!) {
       placements(projectId: $projectId, pageId: $pageId) {
-            projectId pageId id type graphic
+            projectId pageId id graphic
       }
     }`;
     variables = {
@@ -164,7 +157,6 @@ describe("placement", () => {
     expect(foundPlacement).toHaveProperty("projectId", projectId);
     expect(foundPlacement).toHaveProperty("pageId", pageId);
     expect(foundPlacement).toHaveProperty("id", placementId);
-    expect(foundPlacement).toHaveProperty("type", type);
     expect(foundPlacement).toHaveProperty("graphic", graphic);
   });
 });

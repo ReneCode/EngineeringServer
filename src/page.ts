@@ -1,6 +1,6 @@
 const uuidv4 = require("uuid/v4");
 import Placement from "./placement";
-import { PlacementType, IdType } from "./types";
+import { IdType } from "./types";
 
 class Page {
   id: IdType;
@@ -15,8 +15,8 @@ class Page {
     this.name = name;
   }
 
-  createPlacement(type: PlacementType, graphic: string): Placement {
-    const pl = new Placement(this.projectId, this.id, type, graphic);
+  createPlacement(graphic: string): Placement {
+    const pl = new Placement(this.projectId, this.id, graphic);
     this.placements = this.placements.concat(pl);
     return pl;
   }

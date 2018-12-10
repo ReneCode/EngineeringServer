@@ -1,4 +1,4 @@
-import { PlacementType, IdType } from "./types";
+import { IdType } from "./types";
 
 export interface Input<I> {
   input: I;
@@ -25,7 +25,6 @@ export interface DeletePageInput {
 export interface CreatePlacementInput {
   projectId: IdType;
   pageId: IdType;
-  type: PlacementType;
   graphic: string;
 }
 export interface DeletePlacementInput {
