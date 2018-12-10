@@ -2,16 +2,33 @@ import * as uuidv4 from "uuid/v4";
 import Page from "./page";
 import { IdType } from "./types";
 import Element from "./element";
+import ItemBase from "./ItemBase";
 
-class Project {
+class Project extends ItemBase {
   id: IdType;
   name: string;
   pages: Page[] = [];
   elements: Element[] = [];
 
   constructor(name: string) {
+    super("project");
     this.id = uuidv4();
     this.name = name;
+  }
+
+  toJSON(): object {
+    return Object.assign({}, this, {
+      pages: this.pages.map(p => p.toJSON()),
+      elements: this.elements.map(e => e.toJSON())
+    });
+  }
+
+  static fromJSON(json: any): Project {
+    const project = Object.create(Project.prototype);
+    return Object.assign(project, json, {
+      pages: json.pages.map((p: any) => Page.fromJSON(p)),
+      elements: json.elements.map((p: any) => Element.fromJSON(p))
+    });
   }
 
   createPage(name: string): Page {
@@ -57,12 +74,10 @@ class Project {
   ): IdType {
     this.elements = this.elements.map(s => {
       if (s.id === id) {
-        return {
-          ...s,
-          type,
-          name,
-          content
-        };
+        s.type = type;
+        s.name = name;
+        s.content = content;
+        return s;
       } else {
         return s;
       }
