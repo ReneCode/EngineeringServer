@@ -11,6 +11,7 @@ script:
   - yarn build
 
 before_deploy:
+  - cp package.json dist/
   - cd dist
 
 deploy:
