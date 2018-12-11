@@ -10,7 +10,10 @@ script:
   - scripts/prebuild.sh
   - yarn build
 
+before_deploy:
+  - cd dist
+
 deploy:
   provider: azure_web_apps
-  skip_cleanup: false
+  skip_cleanup: true
   verbose: true

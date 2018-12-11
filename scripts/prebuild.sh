@@ -2,3 +2,4 @@
 
 echo ====== set environment
 
+cp package.json dist/
