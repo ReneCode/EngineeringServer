@@ -7,7 +7,7 @@
     "node": ">= 10.0.0"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node index.js",
     "build": "tsc",
     "start:w": "nodemon",
     "test": "jest --watch"
