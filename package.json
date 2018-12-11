@@ -4,7 +4,7 @@
   "description": "backend for engineering-editor",
   "main": "src/index.js",
   "engines": {
-    "node": "10.11"
+    "node": "10.4.0"
   },
   "scripts": {
     "start": "node dist/index.js",
