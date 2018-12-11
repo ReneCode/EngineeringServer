@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "backend for engineering-editor",
   "main": "src/index.js",
+  "engines": {
+    "node": "10.11"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
