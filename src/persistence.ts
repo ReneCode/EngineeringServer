@@ -29,6 +29,7 @@ const getFullFileName = (name: string) => {
 };
 
 router.post("/projects/:name", (req, res) => {
+  console.log("persistence.post");
   const projectName = req.params.name;
 
   let project = rootValue.projects().find(p => p.name === projectName);
@@ -44,6 +45,7 @@ router.post("/projects/:name", (req, res) => {
 });
 
 router.get("/projects/:name", (req, res) => {
+  console.log("persistence.get one");
   const projectName = req.params.name;
 
   // remove old project with the same name
@@ -60,7 +62,7 @@ router.get("/projects/:name", (req, res) => {
     console.log(":", project);
 
     projectList.projects.push(project as Project);
-    res.send();
+    res.json(project);
   } catch (ex) {
     console.log(ex);
     res.status(204);
@@ -70,11 +72,11 @@ router.get("/projects/:name", (req, res) => {
 
 // list all project names
 router.get("/projects", (req, res) => {
+  console.log("persistence.get all");
   let dir = getFullDir();
   let fileNames = fs
     .readdirSync(dir)
     .map(f => path.basename(f, path.extname(f)));
-  console.log(fileNames);
 
   res.send(fileNames);
 });
