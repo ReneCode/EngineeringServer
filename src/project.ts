@@ -44,8 +44,15 @@ class Project extends ItemBase {
 
   getPage(id: IdType): Page | undefined {
     try {
-      const page = this.pages.find(p => p.id === id);
-      return page;
+      if (this.pages.length > 0) {
+        if (id === "first") {
+          return this.pages[0];
+        } else {
+          return this.pages.find(p => p.id === id);
+        }
+      } else {
+        return undefined;
+      }
     } catch (ex) {
       console.log(ex);
     }
