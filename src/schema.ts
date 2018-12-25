@@ -65,20 +65,22 @@ const schema = buildSchema(`
     projectId: ID,
     pageId: ID,
     id: ID,
-    graphic: String
+    type: String,
+    content: String
   }
 
   input CreatePlacementInput {
     projectId: ID!,
     pageId: ID!,
-    graphic: String!
+    type: String!,
+    content: String!
   }
 
   input UpdatePlacementInput {
     projectId: ID!,
     pageId: ID!,
     id: ID!,
-    graphic: String!
+    content: String!
   }
 
   input DeletePlacementInput {

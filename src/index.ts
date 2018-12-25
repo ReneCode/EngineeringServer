@@ -18,14 +18,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: rootValue,
-    graphiql: true
-  })
-);
+const graphql = graphqlHTTP({
+  schema: schema,
+  rootValue: rootValue,
+  graphiql: true
+});
+app.use("/graphql", graphql);
 
 app.use("/persistence", persistence);
 

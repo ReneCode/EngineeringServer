@@ -29,8 +29,8 @@ class Page extends ItemBase {
     });
   }
 
-  createPlacement(graphic: string): Placement {
-    const pl = new Placement(this.projectId, this.id, graphic);
+  createPlacement(type: string, content: string): Placement {
+    const pl = new Placement(type, this.projectId, this.id, content);
     this.placements = this.placements.concat(pl);
     return pl;
   }
@@ -40,12 +40,12 @@ class Page extends ItemBase {
     return id;
   }
 
-  updatePlacement(id: IdType, graphic: string): IdType {
+  updatePlacement(id: IdType, content: string): IdType {
     this.placements = this.placements.map(p => {
       if (p.id !== id) {
         return p;
       } else {
-        p.graphic = graphic;
+        p.content = content;
         return p;
       }
     });

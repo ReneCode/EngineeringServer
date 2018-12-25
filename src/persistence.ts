@@ -59,7 +59,6 @@ router.get("/projects/:name", (req, res) => {
     const json = JSON.parse(jsonString);
 
     const project = ItemFactory.fromJSON(json);
-    console.log(":", project);
 
     projectList.projects.push(project as Project);
     res.json(project);

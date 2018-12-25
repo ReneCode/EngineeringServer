@@ -1,19 +1,29 @@
 import ItemBase from "./ItemBase";
+import { IdType } from "./types";
 
 const uuidv4 = require("uuid/v4");
 
-class Placement extends ItemBase {
-  projectId: string;
-  pageId: string;
-  id: string;
-  graphic: string;
+type PlacementType = "line";
 
-  constructor(projectId: string, pageId: string, graphic: string) {
+class Placement extends ItemBase {
+  id: IdType;
+  type: string;
+  projectId: IdType;
+  pageId: IdType;
+  content: string;
+
+  constructor(
+    type: string,
+    projectId: IdType,
+    pageId: IdType,
+    content: string
+  ) {
     super("placement");
+    this.type = type;
     this.projectId = projectId;
     this.pageId = pageId;
     this.id = uuidv4();
-    this.graphic = graphic;
+    this.content = content;
   }
 
   toJSON(): object {

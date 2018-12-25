@@ -16,7 +16,7 @@ describe("persistence", () => {
               projectId: "9e083452-2443-4355-b4f1-eda116c16196",
               pageId: "8ea9cd83-a1fe-4f02-b32d-8ccda7762bcf",
               id: "374a49ff-2b62-4d6f-829b-f3a3bf337a29",
-              graphic:
+              content:
                 '{"type":"symbolref","name":"symbol-596","pt":{"x":-276,"y":1428}}'
             }
           ],
@@ -49,7 +49,6 @@ describe("persistence", () => {
 
     const obj: any = ItemFactory.fromJSON(json);
     expect(obj).toBeInstanceOf(Project);
-    console.log(obj);
     expect(obj.pages[0]).toBeInstanceOf(Page);
   });
 });

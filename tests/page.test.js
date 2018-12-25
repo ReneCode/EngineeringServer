@@ -22,7 +22,7 @@ describe("page", () => {
   it("createPage", async () => {
     const pageName = "newPage";
     // create new page
-    let mutation = `mutation createProject($input: CreatePageInput!) {
+    let mutation = `mutation createPage($input: CreatePageInput!) {
       createPage(input: $input) { id projectId name }
     }`;
     let variables = {
@@ -101,5 +101,29 @@ describe("page", () => {
 
     pages = await getPages(projectId);
     expect(pages).toHaveLength(0);
+  });
+
+  it("get 'first' page", async () => {
+    const pageA = await createPage(projectId, "pageA");
+    const pageB = await createPage(projectId, "pageB");
+    // get first page  (pageId='first')
+    const query = `query Q($projectId: ID!, $pageId: ID!) {
+          project(id: $projectId) {
+            page(id: $pageId) {
+              id projectId, name
+            }
+          }
+        }`;
+    variables = {
+      projectId: projectId,
+      pageId: "first"
+    };
+    const res = await gql(query, variables);
+    expect(res.data).toBeTruthy();
+    expect(res.errors).toBeFalsy();
+    const page = res.data.project.page;
+    expect(page).toBeTruthy();
+    expect(page).toHaveProperty("id", pageA.id);
+    expect(page).toHaveProperty("name", pageA.name);
   });
 });

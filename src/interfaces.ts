@@ -23,9 +23,10 @@ export interface DeletePageInput {
 }
 
 export interface CreatePlacementInput {
+  type: string;
   projectId: IdType;
   pageId: IdType;
-  graphic: string;
+  content: string;
 }
 export interface DeletePlacementInput {
   projectId: IdType;
@@ -37,7 +38,7 @@ export interface UpdatePlacementInput {
   projectId: IdType;
   pageId: IdType;
   id: IdType;
-  graphic: string;
+  content: string;
 }
 
 export interface CreateElementInput {

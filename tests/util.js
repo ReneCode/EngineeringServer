@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-const gql = (query, variables = null) => {
+const gql = async (query, variables = null) => {
   const url = "http://localhost:8080/graphql";
 
   const cmd = {
@@ -8,14 +8,15 @@ const gql = (query, variables = null) => {
     variables
   };
 
-  return fetch(url, {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json"
     },
     body: JSON.stringify(cmd)
-  }).then(res => res.json());
+  });
+  return await res.json();
 };
 
 const getProjects = async () => {
@@ -110,15 +111,16 @@ const deleteProject = async projectId => {
   await gql(mutation, variables);
 };
 
-const createPlacement = async (projectId, pageId, graphic) => {
+const createPlacement = async (projectId, pageId, type, content) => {
   let mutation = `mutation M($input: CreatePlacementInput!) {
-    createPlacement(input: $input) { id projectId pageId graphic }
+    createPlacement(input: $input) { id projectId pageId content }
   }`;
   let variables = {
     input: {
       projectId,
       pageId,
-      graphic
+      type,
+      content
     }
   };
   try {
@@ -135,7 +137,7 @@ const getPlacements = async (projectId, pageId) => {
         project(id: $projectId) {
           page(id: $pageId) {
             placements {
-              projectId pageId id graphic
+              projectId pageId id content
             }
           }
         }
@@ -156,7 +158,7 @@ const updateOnePlacement = async (
   projectId,
   pageId,
   placementId,
-  newGraphic
+  newContent
 ) => {
   const mutation = `mutation updatePlacements($input: [UpdatePlacementsInput]!) {
     updatePlacements(input: $input) 
@@ -167,7 +169,7 @@ const updateOnePlacement = async (
         projectId: projectId,
         pageId: pageId,
         id: placementId,
-        graphic: newGraphic
+        content: newContent
       }
     ]
   };
