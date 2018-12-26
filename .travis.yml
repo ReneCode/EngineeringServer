@@ -3,6 +3,9 @@ node_js: stable
 dist: trusty
 sudo: required
 
+git:
+  depth: 999
+
 install:
   - yarn install
 
