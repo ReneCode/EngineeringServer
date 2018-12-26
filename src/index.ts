@@ -29,7 +29,7 @@ app.use("/persistence", persistence);
 
 app.get("/", (req: any, res: any) => {
   res.send(
-    'Hi, engineering server is running. Try <a href="/graphql">graphql</a'
+    'Hi, engineering server is running. Try <a href="/graphql">graphql</a>.'
   );
 });
 
