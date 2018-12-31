@@ -80,20 +80,21 @@ const rootValue = {
     return [];
   },
 
-  createPlacement: ({
-    input
-  }: I.Input<I.CreatePlacementInput>): Placement | null => {
+  createPlacement: ({ input }: I.Input<I.CreatePlacementInput[]>): any[] => {
     rlog("createPlacement");
-    const project = projectList.getProject(input.projectId);
-    if (!project) {
-      return null;
-    }
-    const page = project.getPage(input.pageId);
-    if (!page) {
-      return null;
-    }
 
-    return page.createPlacement(input.type, input.content);
+    const result = input.map(i => {
+      const project = projectList.getProject(i.projectId);
+      if (!project) {
+        return null;
+      }
+      const page = project.getPage(i.pageId);
+      if (!page) {
+        return null;
+      }
+      return page.createPlacement(i.type, i.content);
+    });
+    return result;
   },
 
   updatePlacements: ({ input }: I.Input<I.UpdatePlacementInput[]>): any[] => {

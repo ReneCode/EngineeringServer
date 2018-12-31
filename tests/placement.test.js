@@ -28,27 +28,36 @@ describe("placement", () => {
   it("createPlacement", async () => {
     // create new placement
 
-    const content = "abc-xyz";
-
-    let mutation = `mutation createPlacement($input: CreatePlacementInput!) {
+    let mutation = `mutation createPlacement($input: [CreatePlacementInput]!) {
       createPlacement(input: $input) { id projectId pageId type content }
     }`;
     let variables = {
-      input: {
-        projectId: projectId,
-        pageId: pageId,
-        type: "line",
-        content
-      }
+      input: [
+        {
+          projectId: projectId,
+          pageId: pageId,
+          type: "line",
+          content: "line-content"
+        },
+        {
+          projectId: projectId,
+          pageId: pageId,
+          type: "circle",
+          content: "circle-content"
+        }
+      ]
     };
     let res = await gql(mutation, variables);
     expect(res.data).toBeTruthy();
     expect(res.errors).toBeFalsy();
     let data = res.data;
-    const placement = data.createPlacement;
-    expect(placement).not.toBeNull();
-    const placementId = placement.id;
-    expect(placement.content).toBe(content);
+    const gotPlacements = data.createPlacement;
+    expect(gotPlacements).not.toBeNull();
+    expect(gotPlacements).toHaveLength(2);
+    expect(gotPlacements[0].content).toEqual("line-content");
+    expect(gotPlacements[1].content).toEqual("circle-content");
+    const lineId = gotPlacements[0].id;
+    const circleId = gotPlacements[1].id;
 
     // get placement
     const query = `query Q($projectId: ID!, $pageId: ID!) {
@@ -69,13 +78,21 @@ describe("placement", () => {
     expect(res.errors).toBeFalsy();
     data = res.data;
     const placements = res.data.project.page.placements;
-    expect(placements).toHaveLength(1);
-    const foundPlacement = placements.find(p => p.id == placementId);
-    expect(foundPlacement).toBeTruthy();
-    expect(foundPlacement).toHaveProperty("projectId", projectId);
-    expect(foundPlacement).toHaveProperty("pageId", pageId);
-    expect(foundPlacement).toHaveProperty("id", placementId);
-    expect(foundPlacement).toHaveProperty("content", content);
+    expect(placements).toHaveLength(2);
+
+    const foundLine = placements[0];
+    expect(foundLine).toBeTruthy();
+    expect(foundLine).toHaveProperty("projectId", projectId);
+    expect(foundLine).toHaveProperty("pageId", pageId);
+    expect(foundLine).toHaveProperty("id", lineId);
+    expect(foundLine).toHaveProperty("content", "line-content");
+
+    const foundCircle = placements[1];
+    expect(foundCircle).toBeTruthy();
+    expect(foundCircle).toHaveProperty("projectId", projectId);
+    expect(foundCircle).toHaveProperty("pageId", pageId);
+    expect(foundCircle).toHaveProperty("id", circleId);
+    expect(foundCircle).toHaveProperty("content", "circle-content");
   });
 
   it("delete Placements", async () => {

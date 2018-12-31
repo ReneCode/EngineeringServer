@@ -112,20 +112,22 @@ const deleteProject = async projectId => {
 };
 
 const createPlacement = async (projectId, pageId, type, content) => {
-  let mutation = `mutation M($input: CreatePlacementInput!) {
+  let mutation = `mutation M($input: [CreatePlacementInput]!) {
     createPlacement(input: $input) { id projectId pageId content }
   }`;
   let variables = {
-    input: {
-      projectId,
-      pageId,
-      type,
-      content
-    }
+    input: [
+      {
+        projectId,
+        pageId,
+        type,
+        content
+      }
+    ]
   };
   try {
     let res = await gql(mutation, variables);
-    return res.data.createPlacement;
+    return res.data.createPlacement[0];
   } catch (ex) {
     console.log("Exception:", ex);
   }

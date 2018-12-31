@@ -18,7 +18,7 @@ const schema = buildSchema(`
     createPage(input: CreatePageInput!): Page
     deletePage(input: DeletePageInput!): ID
     
-    createPlacement(input: CreatePlacementInput!): Placement
+    createPlacement(input: [CreatePlacementInput]!): [Placement]
     updatePlacements(input: [UpdatePlacementInput]!): [ID]
     deletePlacements(input: [DeletePlacementInput]!): [ID]
 
