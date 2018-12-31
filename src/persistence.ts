@@ -11,7 +11,7 @@ import Project from "./project";
 const router = express.Router();
 
 const getFullDir = () => {
-  let dir = process.env.FILE_ROOT || "";
+  let dir = process.env.FILE_ROOT || "data";
   // dir = path.join(os.tmpdir(), dir);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
