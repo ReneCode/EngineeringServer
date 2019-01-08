@@ -61,6 +61,14 @@ const rootValue = {
     }
   },
 
+  updatePage: ({ input }: I.Input<I.UpdatePageInput>) => {
+    rlog("updatePage");
+    const project = projectList.getProject(input.projectId);
+    if (project) {
+      return project.updatePage(input.id, input.property, input.value);
+    }
+  },
+
   // -----------
   placements: ({
     projectId,

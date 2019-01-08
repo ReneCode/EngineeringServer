@@ -126,4 +126,30 @@ describe("page", () => {
     expect(page).toHaveProperty("id", pageA.id);
     expect(page).toHaveProperty("name", pageA.name);
   });
+
+  it("update page", async () => {
+    const pageA = await createPage(projectId, "pageA");
+    const pageB = await createPage(projectId, "pageB");
+    const query = `mutation updatePage($input: UpdatePageInput!) {
+      updatePage(input: $input)
+    }`;
+    const variables = {
+      input: {
+        projectId: projectId,
+        id: pageB.id,
+        property: "name",
+        value: "pageB-new"
+      }
+    };
+    const res = await gql(query, variables);
+    expect(res.errors).toBeFalsy();
+    expect(res.data).toBeTruthy();
+    expect(res.data.updatePage).toEqual(pageB.id);
+
+    const pages = await getPages(projectId);
+    expect(pages).toHaveLength(2);
+    expect(pages[0]).toHaveProperty("name", "pageA");
+    expect(pages[1]).toHaveProperty("id", pageB.id);
+    expect(pages[1]).toHaveProperty("name", "pageB-new");
+  });
 });
