@@ -24,8 +24,7 @@ export interface DeletePageInput {
 export interface UpdatePageInput {
   projectId: IdType;
   id: IdType;
-  property: string;
-  value: string;
+  name: string;
 }
 
 export interface CreatePlacementInput {

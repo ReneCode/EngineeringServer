@@ -42,10 +42,10 @@ class Project extends ItemBase {
     return id;
   }
 
-  updatePage(id: IdType, property: string, value: string): IdType {
+  updatePage(id: IdType, name: string): IdType {
     this.pages = this.pages.map(p => {
       if (p.id === id) {
-        (p as any)[property] = value;
+        p.name = name;
       }
       return p;
     });

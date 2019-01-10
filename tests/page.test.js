@@ -137,8 +137,7 @@ describe("page", () => {
       input: {
         projectId: projectId,
         id: pageB.id,
-        property: "name",
-        value: "pageB-new"
+        name: "new-page-B-name"
       }
     };
     const res = await gql(query, variables);
@@ -150,6 +149,6 @@ describe("page", () => {
     expect(pages).toHaveLength(2);
     expect(pages[0]).toHaveProperty("name", "pageA");
     expect(pages[1]).toHaveProperty("id", pageB.id);
-    expect(pages[1]).toHaveProperty("name", "pageB-new");
+    expect(pages[1]).toHaveProperty("name", "new-page-B-name");
   });
 });

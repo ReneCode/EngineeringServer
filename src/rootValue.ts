@@ -65,7 +65,7 @@ const rootValue = {
     rlog("updatePage");
     const project = projectList.getProject(input.projectId);
     if (project) {
-      return project.updatePage(input.id, input.property, input.value);
+      return project.updatePage(input.id, input.name);
     }
   },
 

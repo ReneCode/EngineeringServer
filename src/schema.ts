@@ -56,8 +56,7 @@ const schema = buildSchema(`
   input UpdatePageInput {
     projectId: ID!,
     id: ID!,
-    property: String!,
-    value: String!
+    name: String!,
   }
 
   type Page {
