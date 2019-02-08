@@ -75,6 +75,7 @@ const schema = buildSchema(`
   }
 
   input CreatePlacementInput {
+    id: ID,
     projectId: ID!,
     pageId: ID!,
     type: String!,

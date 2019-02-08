@@ -16,13 +16,14 @@ class Placement extends ItemBase {
     type: string,
     projectId: IdType,
     pageId: IdType,
-    content: string
+    content: string,
+    id: IdType
   ) {
     super("placement");
     this.type = type;
     this.projectId = projectId;
     this.pageId = pageId;
-    this.id = uuidv4();
+    this.id = id || uuidv4();
     this.content = content;
   }
 

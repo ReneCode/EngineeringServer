@@ -100,7 +100,7 @@ const rootValue = {
       if (!page) {
         return null;
       }
-      return page.createPlacement(i.type, i.content);
+      return page.createPlacement(i.type, i.content, i.id);
     });
     return result;
   },

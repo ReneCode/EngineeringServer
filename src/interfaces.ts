@@ -28,6 +28,7 @@ export interface UpdatePageInput {
 }
 
 export interface CreatePlacementInput {
+  id: IdType;
   type: string;
   projectId: IdType;
   pageId: IdType;

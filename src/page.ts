@@ -29,8 +29,8 @@ class Page extends ItemBase {
     });
   }
 
-  createPlacement(type: string, content: string): Placement {
-    const pl = new Placement(type, this.projectId, this.id, content);
+  createPlacement(type: string, content: string, id: IdType): Placement {
+    const pl = new Placement(type, this.projectId, this.id, content, id);
     this.placements = this.placements.concat(pl);
     return pl;
   }
