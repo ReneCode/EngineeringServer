@@ -69,6 +69,7 @@ class Project extends ItemBase {
   }
 
   page({ id }: { id: IdType }): Page | undefined {
+    console.log("read page:", id);
     return this.getPage(id);
   }
 

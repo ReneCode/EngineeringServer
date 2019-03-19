@@ -20,3 +20,7 @@ https://blog.lifeishao.com/2017/03/24/custom-nodejs-deployment-on-azure-web-app/
     - create a web.config out of the npm run start command
 
 - set travis AZURE_WA_SITE, AZURE_WA_USERNAME, AZURE_WA_PASSWORD environment variables
+
+# use application insight for logging
+
+https://docs.microsoft.com/de-de/azure/azure-monitor/app/nodejs
