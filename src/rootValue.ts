@@ -1,7 +1,5 @@
 //
 
-import appInsights = require("applicationinsights");
-
 import projectList from "./projectList";
 import Project from "./project";
 
@@ -10,6 +8,7 @@ import { IdType } from "./types";
 import Placement from "./placement";
 import Page from "./page";
 import Element from "./element";
+import applicationInsightsLogger from "./applicationInsightsLogger";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
@@ -87,12 +86,12 @@ const rootValue = {
     if (project) {
       const page = project.getPage(pageId);
       if (page) {
-        appInsights.defaultClient.commonProperties = {
+        const props = {
           projectId,
           pageId,
           count: "" + page.placements.length
         };
-        appInsights.defaultClient.trackTrace({ message: `/placements` });
+        applicationInsightsLogger.trackTrace("/placements", props);
         return page.placements;
       }
     }

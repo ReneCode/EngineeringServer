@@ -8,26 +8,14 @@ import persistence from "./persistence";
 import schema from "./schema";
 import rootValue from "./rootValue";
 import initData from "./initData";
-import appInsights = require("applicationinsights");
+import applicationInsightsLogger from "./applicationInsightsLogger";
 
 require("dotenv").config();
-
-// start application insights
-const key = process.env.INSTRUMENTATION_KEY;
-if (!key) {
-  throw new Error("application insight key missing");
-}
-appInsights.setup(key).start();
-
 const app = express();
 
-app.use((req, res, next) => {
-  appInsights.defaultClient.trackNodeHttpRequest({
-    request: req,
-    response: res
-  });
-  next();
-});
+if (applicationInsightsLogger.init()) {
+  applicationInsightsLogger.trackHttpRequests(app);
+}
 
 app.use(cors());
 
