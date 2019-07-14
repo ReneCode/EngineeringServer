@@ -4,6 +4,14 @@ export interface Input<I> {
   input: I;
 }
 
+export interface CreateSymbolLibInput {
+  id: IdType;
+  name: string;
+}
+export interface DeleteSymbolLibInput {
+  id: IdType;
+}
+
 export interface CreateProjectInput {
   name: string;
 }

@@ -1,4 +1,9 @@
-export type ItemType = "project" | "page" | "element" | "placement";
+export type ItemType =
+  | "symbolLib"
+  | "project"
+  | "page"
+  | "element"
+  | "placement";
 
 class ItemBase {
   _type: ItemType;

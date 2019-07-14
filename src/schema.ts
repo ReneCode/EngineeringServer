@@ -2,13 +2,15 @@ const { buildSchema } = require("graphql");
 
 const schema = buildSchema(`
   type Query {
-    projects: [Project],
+    projects: [Project]
     project(id:ID!): Project
 
     pages(projectId: ID!): [Page],
     placements(projectId: ID!, pageId: ID!): [Placement]
 
     elements(projectID: ID!, type: String!, name: String!): [Element]
+
+    symbolLibs: [SymbolLib]
   }
 
   type Mutation {
@@ -26,6 +28,23 @@ const schema = buildSchema(`
     createElement(input: CreateElementInput!): Element
     updateElement(input: UpdateElementInput!): ID
     deleteElement(input: DeleteElementInput!): ID
+
+    createSymbolLib(input: CreateSymbolLibInput!): SymbolLib
+    deleteSymbolLib(input: DeleteSymbolLibInput!): ID
+  }
+
+  type SymbolLib {
+    id: ID
+    name: String
+  }
+
+  input CreateSymbolLibInput {
+    name: String!
+    id: ID
+  }
+
+  input DeleteSymbolLibInput {
+    id: ID!
   }
 
   input CreateProjectInput {

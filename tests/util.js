@@ -19,6 +19,26 @@ const gql = async (query, variables = null) => {
   return await res.json();
 };
 
+const getSymbolLibs = async () => {
+  const query = `{
+    symbolLibs { id name}
+  }`;
+  const json = await gql(query);
+  return json.data.symbolLibs;
+};
+
+const deleteSymbolLib = async symbolLibId => {
+  mutation = `mutation deleteSymbolLib($input: DeleteSymbolLibInput!) {
+        deleteSymbolLib(input: $input)
+    }`;
+  variables = {
+    input: {
+      id: symbolLibId
+    }
+  };
+  await gql(mutation, variables);
+};
+
 const getProjects = async () => {
   const query = `{
     projects { id name}
@@ -241,6 +261,8 @@ const updateElement = async (projectId, elementId, type, name, content) => {
 
 module.exports = {
   gql,
+  getSymbolLibs,
+  deleteSymbolLib,
   getProjects,
   createProject,
   deleteProject,

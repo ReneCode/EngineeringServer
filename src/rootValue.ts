@@ -9,12 +9,29 @@ import Placement from "./placement";
 import Page from "./page";
 import Element from "./element";
 import applicationInsightsLogger from "./applicationInsightsLogger";
+import symbolLibList from "./symbolLibList";
+import SymbolLib from "./symbolLib";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
 };
 
 const rootValue = {
+  symbolLibs: (): SymbolLib[] => {
+    rlog("symbolLibs");
+    return symbolLibList.getSymbolLibs();
+  },
+
+  createSymbolLib: ({ input }: I.Input<I.CreateSymbolLibInput>): SymbolLib => {
+    rlog("createSymbolLib");
+    return symbolLibList.createSymbolLib(input.id, input.name);
+  },
+
+  deleteSymbolLib: ({ input }: I.Input<I.DeleteSymbolLibInput>): IdType => {
+    rlog("deleteSymbolLib");
+    return symbolLibList.deleteSymbolLib(input.id);
+  },
+
   createProject: ({ input }: I.Input<I.CreateProjectInput>): Project => {
     rlog("createProject");
     return projectList.createProject(input.name);
