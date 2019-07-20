@@ -14,6 +14,7 @@ export interface DeleteSymbolLibInput {
 
 export interface CreateProjectInput {
   name: string;
+  id: IdType;
 }
 
 export interface DeleteProjectInput {

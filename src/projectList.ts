@@ -8,8 +8,8 @@ class ProjectList {
     this.projects = [];
   }
 
-  createProject(name: string): Project {
-    const p = new Project(name);
+  createProject(id: IdType, name: string): Project {
+    const p = new Project(id, name);
     this.projects.push(p);
     return p;
   }

@@ -42,13 +42,13 @@ const schema = buildSchema(`
     name: String!
     id: ID
   }
-
   input DeleteSymbolLibInput {
     id: ID!
   }
 
   input CreateProjectInput {
     name: String!
+    id: ID
   }
   input DeleteProjectInput {
     id: ID!

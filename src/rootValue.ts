@@ -34,7 +34,7 @@ const rootValue = {
 
   createProject: ({ input }: I.Input<I.CreateProjectInput>): Project => {
     rlog("createProject");
-    return projectList.createProject(input.name);
+    return projectList.createProject(input.id, input.name);
   },
 
   deleteProject: ({ input }: I.Input<I.DeleteProjectInput>): IdType => {

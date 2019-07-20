@@ -10,9 +10,9 @@ class Project extends ItemBase {
   pages: Page[] = [];
   elements: Element[] = [];
 
-  constructor(name: string) {
+  constructor(id: IdType, name: string) {
     super("project");
-    this.id = uuidv4();
+    this.id = id || uuidv4();
     this.name = name;
   }
 
