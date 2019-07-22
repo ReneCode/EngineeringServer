@@ -8,6 +8,10 @@ class SymbolLibList {
     this.symbolLibs = [];
   }
 
+  getSymbolLib(id: string): SymbolLib | undefined {
+    return this.symbolLibs.find(sl => sl.id === id);
+  }
+
   getSymbolLibs(): SymbolLib[] {
     return this.symbolLibs;
   }

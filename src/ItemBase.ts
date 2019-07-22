@@ -1,4 +1,5 @@
 export type ItemType =
+  | "symbol"
   | "symbolLib"
   | "project"
   | "page"

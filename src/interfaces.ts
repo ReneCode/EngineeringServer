@@ -4,6 +4,23 @@ export interface Input<I> {
   input: I;
 }
 
+export interface CreateSymbolInput {
+  symbolLibId: IdType;
+  id: IdType;
+  name: string;
+  content: string;
+}
+export interface UpdateSymbolInput {
+  symbolLibId: IdType;
+  id: IdType;
+  name: string;
+  content: string;
+}
+export interface DeleteSymbolInput {
+  symbolLibId: IdType;
+  id: IdType;
+}
+
 export interface CreateSymbolLibInput {
   id: IdType;
   name: string;

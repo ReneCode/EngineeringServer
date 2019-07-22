@@ -11,6 +11,7 @@ import Element from "./element";
 import applicationInsightsLogger from "./applicationInsightsLogger";
 import symbolLibList from "./symbolLibList";
 import SymbolLib from "./symbolLib";
+import Symbol from "./Symbol";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
@@ -20,6 +21,29 @@ const rootValue = {
   symbolLibs: (): SymbolLib[] => {
     rlog("symbolLibs");
     return symbolLibList.getSymbolLibs();
+  },
+
+  symbolLib: ({ id }: { id: IdType }): SymbolLib | undefined => {
+    rlog("symbolLib:", id);
+    return symbolLibList.getSymbolLib(id);
+  },
+
+  createSymbol: ({ input }: I.Input<I.CreateSymbolInput>): Symbol | null => {
+    rlog("createSymbol");
+    const symbolLib = symbolLibList.getSymbolLib(input.symbolLibId);
+    if (symbolLib) {
+      return symbolLib.createSymbol(input.id, input.name, input.content);
+    } else {
+      return null;
+    }
+  },
+  updateSymbol: ({ input }: I.Input<I.UpdateSymbolInput>): IdType | null => {
+    rlog("updateSymbol");
+    const symbolLib = symbolLibList.getSymbolLib(input.symbolLibId);
+    if (symbolLib) {
+      return symbolLib.updateSymbol(input.id, input.name, input.content);
+    }
+    return null;
   },
 
   createSymbolLib: ({ input }: I.Input<I.CreateSymbolLibInput>): SymbolLib => {

@@ -11,6 +11,7 @@ const schema = buildSchema(`
     elements(projectID: ID!, type: String!, name: String!): [Element]
 
     symbolLibs: [SymbolLib]
+    symbolLib(id: ID!): SymbolLib
   }
 
   type Mutation {
@@ -31,11 +32,42 @@ const schema = buildSchema(`
 
     createSymbolLib(input: CreateSymbolLibInput!): SymbolLib
     deleteSymbolLib(input: DeleteSymbolLibInput!): ID
+
+    createSymbol(input: CreateSymbolInput!): Symbol
+    updateSymbol(input: UpdateSymbolInput!): ID
+    deleteSymbol(input: DeleteSymbolInput!): ID
+  }
+
+  type Symbol {
+    symbolLibId: ID
+    id: ID
+    name: String,
+    content: String
+  }
+
+  input CreateSymbolInput {
+    symbolLibId: ID!
+    id: ID
+    name: String!
+    content: String!
+  }
+  input UpdateSymbolInput {
+    symbolLibId: ID!
+    id: ID!
+    name: String!
+    content: String!
+  }
+  input DeleteSymbolInput {
+    symbolLibId: ID!
+    id: ID!
   }
 
   type SymbolLib {
     id: ID
     name: String
+
+    symbol(id: ID!): Symbol
+    symbols: [Symbol]
   }
 
   input CreateSymbolLibInput {
