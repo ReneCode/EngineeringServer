@@ -8,21 +8,11 @@ type PlacementType = "line";
 class Placement extends ItemBase {
   id: IdType;
   type: string;
-  projectId: IdType;
-  pageId: IdType;
   content: string;
 
-  constructor(
-    type: string,
-    projectId: IdType,
-    pageId: IdType,
-    content: string,
-    id: IdType
-  ) {
+  constructor(type: string, content: string, id: IdType) {
     super("placement");
     this.type = type;
-    this.projectId = projectId;
-    this.pageId = pageId;
     this.id = id || uuidv4();
     this.content = content;
   }

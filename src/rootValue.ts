@@ -12,6 +12,7 @@ import applicationInsightsLogger from "./applicationInsightsLogger";
 import symbolLibList from "./symbolLibList";
 import SymbolLib from "./symbolLib";
 import Symbol from "./Symbol";
+import { getPlacementParent } from "./util";
 
 const rlog = (...args: any[]) => {
   console.log(...args);
@@ -114,44 +115,40 @@ const rootValue = {
   },
 
   // -----------
-  placements: ({
-    projectId,
-    pageId
-  }: {
-    projectId: IdType;
-    pageId: IdType;
-  }): Placement[] => {
-    // rlog("placements");
+  // placements: ({
+  //   projectId,
+  //   pageId
+  // }: {
+  //   projectId: IdType;
+  //   pageId: IdType;
+  // }): Placement[] => {
+  //   // rlog("placements");
 
-    const project = projectList.getProject(projectId);
-    if (project) {
-      const page = project.getPage(pageId);
-      if (page) {
-        const props = {
-          projectId,
-          pageId,
-          count: "" + page.placements.length
-        };
-        applicationInsightsLogger.trackTrace("/placements", props);
-        return page.placements;
-      }
-    }
-    return [];
-  },
+  //   const project = projectList.getProject(projectId);
+  //   if (project) {
+  //     const page = project.getPage(pageId);
+  //     if (page) {
+  //       const props = {
+  //         projectId,
+  //         pageId,
+  //         count: "" + page.placements.length
+  //       };
+  //       applicationInsightsLogger.trackTrace("/placements", props);
+  //       return page.placements;
+  //     }
+  //   }
+  //   return [];
+  // },
 
   createPlacement: ({ input }: I.Input<I.CreatePlacementInput[]>): any[] => {
     rlog("createPlacement");
 
     const result = input.map(i => {
-      const project = projectList.getProject(i.projectId);
-      if (!project) {
+      const parent = getPlacementParent(i);
+      if (!parent) {
         return null;
       }
-      const page = project.getPage(i.pageId);
-      if (!page) {
-        return null;
-      }
-      return page.createPlacement(i.type, i.content, i.id);
+      return parent.createPlacement(i.type, i.content, i.id);
     });
     return result;
   },
@@ -161,15 +158,10 @@ const rootValue = {
 
     const result = input.map(i => {
       rlog("update one placement");
-      const project = projectList.getProject(i.projectId);
-      if (!project) {
-        return null;
+      const parent = getPlacementParent(i);
+      if (parent) {
+        return parent.updatePlacement(i.id, i.content);
       }
-      const page = project.getPage(i.pageId);
-      if (!page) {
-        return null;
-      }
-      return page.updatePlacement(i.id, i.content);
     });
     return result;
   },
@@ -178,16 +170,10 @@ const rootValue = {
     rlog("deletePlacements");
     const result = input.map(i => {
       rlog("deleteOnePlacement");
-      const project = projectList.getProject(i.projectId);
-      if (!project) {
-        return null;
+      const parent = getPlacementParent(i);
+      if (parent) {
+        return parent.deletePlacement(i.id);
       }
-      const page = project.getPage(i.pageId);
-      if (!page) {
-        return null;
-      }
-
-      return page.deletePlacement(i.id);
     });
     return result;
   },

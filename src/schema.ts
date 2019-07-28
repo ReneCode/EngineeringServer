@@ -6,7 +6,6 @@ const schema = buildSchema(`
     project(id:ID!): Project
 
     pages(projectId: ID!): [Page],
-    placements(projectId: ID!, pageId: ID!): [Placement]
 
     elements(projectID: ID!, type: String!, name: String!): [Element]
 
@@ -43,6 +42,8 @@ const schema = buildSchema(`
     id: ID
     name: String,
     content: String
+
+    placements: [Placement]
   }
 
   input CreateSymbolInput {
@@ -118,8 +119,6 @@ const schema = buildSchema(`
   }
 
   type Placement {
-    projectId: ID,
-    pageId: ID,
     id: ID,
     type: String,
     content: String
@@ -127,22 +126,20 @@ const schema = buildSchema(`
 
   input CreatePlacementInput {
     id: ID,
-    projectId: ID!,
-    pageId: ID!,
+    parentIds: [ID]!,
+    parentType: String!,
     type: String!,
     content: String!
   }
-
   input UpdatePlacementInput {
-    projectId: ID!,
-    pageId: ID!,
+    parentIds: [ID]!,
+    parentType: String!,
     id: ID!,
     content: String!
   }
-
   input DeletePlacementInput {
-    projectId: ID!,
-    pageId: ID!,
+    parentIds: [ID]!,
+    parentType: String!,
     id: ID!
   }
 

@@ -3,11 +3,10 @@ import {
   deleteSymbolLib,
   createSymbol,
   getSymbols,
-  getSymbol
-} from "./symbol-util";
-import { array } from "prop-types";
-
-const { gql } = require("./util");
+  getSymbol,
+  createPlacement,
+  getPlacements
+} from "./util";
 
 describe("symbol", () => {
   let symbolLibId = "symbolLibId-abc";
@@ -62,5 +61,33 @@ describe("symbol", () => {
     expect(symbol).toHaveProperty("symbolLibId", symbolLibId);
     expect(symbol).toHaveProperty("name", name);
     expect(symbol).toHaveProperty("content", content);
+  });
+
+  it("create symbol placements", async () => {
+    const symbol = await createSymbol(
+      symbolLibId,
+      "symbolId",
+      "symbolName",
+      "content"
+    );
+    const { id } = symbol;
+
+    const placement = await createPlacement(
+      [symbolLibId, id],
+      "symbol",
+      "line",
+      "lineContent",
+      "lineId"
+    );
+    expect(placement).toHaveProperty("id", "lineId");
+    expect(placement).toHaveProperty("type", "line");
+    expect(placement).toHaveProperty("content", "lineContent");
+
+    const placements = await getPlacements([symbolLibId, id], "symbol");
+    expect(placements).toHaveLength(1);
+    const line = placements[0];
+    expect(line).toHaveProperty("id", "lineId");
+    expect(line).toHaveProperty("type", "line");
+    expect(line).toHaveProperty("content", "lineContent");
   });
 });

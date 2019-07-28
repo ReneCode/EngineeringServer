@@ -3,7 +3,7 @@ import {
   getSymbolLibs,
   getSymbolLib,
   deleteSymbolLib
-} from "./symbol-util";
+} from "./util";
 
 describe("symbolLib", () => {
   it("createSymbolLib", async () => {
@@ -11,7 +11,7 @@ describe("symbolLib", () => {
     let id = "new-Id";
 
     const createdSymbolLib = await createSymbolLib(id, name);
-    expect(createdSymbolLib).not.toBeNull();
+    expect(createdSymbolLib).toBeTruthy();
     expect(createdSymbolLib.name).toBe(name);
     expect(createdSymbolLib.id).toBe(id);
     expect(createdSymbolLib.id).not.toBeNull();

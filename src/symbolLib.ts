@@ -44,7 +44,11 @@ class SymbolLib extends ItemBase {
   }
 
   public symbol({ id }: { id: string }): Symbol | undefined {
-    return this.symbols.find((sy: Symbol) => sy.id === id);
+    return this.getSymbol(id);
+  }
+
+  public getSymbol(symbolId: string) {
+    return this.symbols.find((sy: Symbol) => sy.id === symbolId);
   }
 }
 

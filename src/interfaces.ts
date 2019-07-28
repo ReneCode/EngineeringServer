@@ -1,4 +1,4 @@
-import { IdType } from "./types";
+import { IdType, ParentType } from "./types";
 
 export interface Input<I> {
   input: I;
@@ -54,21 +54,20 @@ export interface UpdatePageInput {
 }
 
 export interface CreatePlacementInput {
+  parentIds: IdType[];
+  parentType: ParentType;
   id: IdType;
   type: string;
-  projectId: IdType;
-  pageId: IdType;
   content: string;
 }
 export interface DeletePlacementInput {
-  projectId: IdType;
-  pageId: IdType;
+  parentIds: IdType[];
+  parentType: ParentType;
   id: IdType;
 }
-
 export interface UpdatePlacementInput {
-  projectId: IdType;
-  pageId: IdType;
+  parentIds: IdType[];
+  parentType: ParentType;
   id: IdType;
   content: string;
 }
