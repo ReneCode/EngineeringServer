@@ -1,16 +1,15 @@
 //
 
-import projectList from "./projectList";
-import Project from "./project";
+import projectList from "./ProjectList";
+import Project from "./Project";
 
 import * as I from "./interfaces";
 import { IdType } from "./types";
-import Placement from "./placement";
-import Page from "./page";
-import Element from "./element";
+import Page from "./Page";
+import Element from "./Element";
 import applicationInsightsLogger from "./applicationInsightsLogger";
-import symbolLibList from "./symbolLibList";
-import SymbolLib from "./symbolLib";
+import symbolLibList from "./SymbolLibList";
+import SymbolLib from "./SymbolLib";
 import Symbol from "./Symbol";
 import { getPlacementParent } from "./util";
 
@@ -27,6 +26,10 @@ const rootValue = {
   symbolLib: ({ id }: { id: IdType }): SymbolLib | undefined => {
     rlog("symbolLib:", id);
     return symbolLibList.getSymbolLib(id);
+  },
+  symbolLibByName: ({ name }: { name: string }): SymbolLib | undefined => {
+    rlog("symbolLibByName:", name);
+    return symbolLibList.getSymbolLibByName(name);
   },
 
   createSymbol: ({ input }: I.Input<I.CreateSymbolInput>): Symbol | null => {

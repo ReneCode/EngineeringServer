@@ -2,7 +2,8 @@ import {
   createSymbolLib,
   getSymbolLibs,
   getSymbolLib,
-  deleteSymbolLib
+  deleteSymbolLib,
+  getSymbolLibByName
 } from "./util";
 
 describe("symbolLib", () => {
@@ -34,5 +35,20 @@ describe("symbolLib", () => {
     symbolLibs = await getSymbolLibs();
     const found = symbolLibs.find((sl: any) => sl.id === id);
     expect(found).toBeFalsy();
+  });
+
+  it("symbolLibByName", async () => {
+    const name = "abc-lib";
+    let id = "abc-Id";
+
+    await createSymbolLib(id, name);
+
+    const foundSymbolLib = await getSymbolLibByName(name);
+
+    expect(foundSymbolLib).toBeTruthy();
+    expect(foundSymbolLib).toHaveProperty("id", id);
+    expect(foundSymbolLib).toHaveProperty("name", name);
+
+    await deleteSymbolLib(id);
   });
 });

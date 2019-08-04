@@ -23,7 +23,7 @@ describe("page", () => {
     const pageName = "newPage";
     // create new page
     let mutation = `mutation createPage($input: CreatePageInput!) {
-      createPage(input: $input) { id projectId name }
+      createPage(input: $input) { id name }
     }`;
     let variables = {
       input: {
@@ -64,7 +64,7 @@ describe("page", () => {
     const query = `query Q($projectId: ID!, $pageId: ID!) {
           project(id: $projectId) {
             page(id: $pageId) {
-              id projectId, name
+              id name
             }
           }
         }`;
@@ -78,7 +78,6 @@ describe("page", () => {
     const newPage = res.data.project.page;
     expect(newPage).toBeTruthy();
     expect(newPage).toHaveProperty("id", pageId);
-    expect(newPage).toHaveProperty("projectId", projectId);
     expect(newPage).toHaveProperty("name", pageName);
   });
 
@@ -110,7 +109,7 @@ describe("page", () => {
     const query = `query Q($projectId: ID!, $pageId: ID!) {
           project(id: $projectId) {
             page(id: $pageId) {
-              id projectId, name
+              id name
             }
           }
         }`;

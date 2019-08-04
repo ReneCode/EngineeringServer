@@ -1,8 +1,7 @@
-import * as I from "./interfaces";
-import Page from "./page";
+import Page from "./Page";
 import Symbol from "./Symbol";
-import projectList from "./projectList";
-import symbolLibList from "./symbolLibList";
+import projectList from "./ProjectList";
+import symbolLibList from "./SymbolLibList";
 import { ParentType, IdType } from "./types";
 
 export const getPlacementParent = (input: {

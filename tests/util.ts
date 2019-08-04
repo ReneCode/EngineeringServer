@@ -29,7 +29,7 @@ export const getProjects = async () => {
 
 export const createPage = async (projectId: string, pageName: string) => {
   let mutation = `mutation createProject($input: CreatePageInput!) {
-      createPage(input: $input) { id projectId name }
+      createPage(input: $input) { id name }
     }`;
   let variables = {
     input: {
@@ -45,9 +45,7 @@ export const createPage = async (projectId: string, pageName: string) => {
 const getPage = async (projectId: string, pageId: string) => {
   const query = `query Q($projectId: ID!, $pageId: ID!) {
     project(id: $projectId) {
-      page(id: $pageId) {
-        id projectId, name
-      }
+      page(id: $pageId) { id name }
     }
   }`;
   const variables = {
@@ -139,6 +137,7 @@ export const createPlacement = async (
   const data = res.data;
   expect(data).toBeTruthy();
   expect(data.createPlacement).toBeTruthy();
+
   return data.createPlacement[0];
 };
 
@@ -329,7 +328,7 @@ export const createSymbol = async (
   content: string
 ) => {
   let mutation = `mutation createSymbol($input: CreateSymbolInput!) {
-    createSymbol(input: $input) { symbolLibId id name content }
+    createSymbol(input: $input) { id name content }
   }`;
   let variables = {
     input: {
@@ -350,7 +349,7 @@ export const createSymbol = async (
 export const getSymbols = async (symbolLibId: string) => {
   let query = `query Q($id: ID!) {
     symbolLib(id: $id) { 
-      symbols { id name symbolLibId content }
+      symbols { id name content }
     }
   }`;
   let variables = {
@@ -367,7 +366,7 @@ export const getSymbols = async (symbolLibId: string) => {
 export const getSymbol = async (symbolLibId: string, symbolId: string) => {
   let query = `query Q($symbolLibId: ID!, $symbolId: ID!) {
     symbolLib(id: $symbolLibId) { 
-      symbol(id: $symbolId) { id name symbolLibId content }
+      symbol(id: $symbolId) { id name content }
     }
   }`;
   let variables = {
@@ -417,6 +416,19 @@ export const getSymbolLib = async (id: string) => {
   expect(json.errors).toBeFalsy();
   expect(json.data).toBeTruthy();
   return json.data.symbolLib;
+};
+export const getSymbolLibByName = async (name: string) => {
+  const query = `query Q($name: String!) {
+    symbolLibByName(name: $name) { id name }
+  }`;
+  const variables = {
+    name
+  };
+  const json = await gql(query, variables);
+  expect(json).toBeTruthy();
+  expect(json.errors).toBeFalsy();
+  expect(json.data).toBeTruthy();
+  return json.data.symbolLibByName;
 };
 
 export const deleteSymbolLib = async (symbolLibId: string) => {

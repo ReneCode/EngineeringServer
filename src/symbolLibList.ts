@@ -1,4 +1,4 @@
-import SymbolLib from "./symbolLib";
+import SymbolLib from "./SymbolLib";
 import { IdType } from "./types";
 
 class SymbolLibList {
@@ -10,6 +10,9 @@ class SymbolLibList {
 
   getSymbolLib(id: string): SymbolLib | undefined {
     return this.symbolLibs.find(sl => sl.id === id);
+  }
+  getSymbolLibByName(name: string): SymbolLib | undefined {
+    return this.symbolLibs.find(sl => sl.name === name);
   }
 
   getSymbolLibs(): SymbolLib[] {

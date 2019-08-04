@@ -3,8 +3,6 @@ import { IdType } from "./types";
 
 const uuidv4 = require("uuid/v4");
 
-type PlacementType = "line";
-
 class Placement extends ItemBase {
   id: IdType;
   type: string;

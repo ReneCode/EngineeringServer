@@ -26,7 +26,6 @@ describe("symbol", () => {
 
     const symbol = await createSymbol(symbolLibId, id, name, content);
     expect(symbol).toHaveProperty("id", id);
-    expect(symbol).toHaveProperty("symbolLibId", symbolLibId);
     expect(symbol).toHaveProperty("name", name);
     expect(symbol).toHaveProperty("content", content);
   });
@@ -44,7 +43,6 @@ describe("symbol", () => {
 
     const symbol = symbols.find((s: any) => s.id === id);
     expect(symbol).toHaveProperty("id", id);
-    expect(symbol).toHaveProperty("symbolLibId", symbolLibId);
     expect(symbol).toHaveProperty("name", name);
     expect(symbol).toHaveProperty("content", content);
   });
@@ -58,7 +56,6 @@ describe("symbol", () => {
     const symbol = await getSymbol(symbolLibId, id);
     expect(symbol).toBeTruthy();
     expect(symbol).toHaveProperty("id", id);
-    expect(symbol).toHaveProperty("symbolLibId", symbolLibId);
     expect(symbol).toHaveProperty("name", name);
     expect(symbol).toHaveProperty("content", content);
   });

@@ -3,10 +3,10 @@ import fs = require("fs");
 import path = require("path");
 import os = require("os");
 
-import rootValue from "./rootValue";
-import projectList from "./projectList";
-import ItemFactory from "./ItemFactory";
-import Project from "./project";
+import rootValue from "../rootValue";
+import projectList from "../projectList";
+import ItemFactory from "../ItemFactory";
+import Project from "../project";
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ const getFullFileName = (name: string) => {
   return fileName;
 };
 
-router.post("/projects/:name", (req, res) => {
+router.post("/:name", (req, res) => {
   console.log("persistence.post");
   const projectName = req.params.name;
 
@@ -44,7 +44,7 @@ router.post("/projects/:name", (req, res) => {
   }
 });
 
-router.get("/projects/:name", (req, res) => {
+router.get("/:name", (req, res) => {
   console.log("persistence.get one");
   const projectName = req.params.name;
 
@@ -70,7 +70,7 @@ router.get("/projects/:name", (req, res) => {
 });
 
 // list all project names
-router.get("/projects", (req, res) => {
+router.get("", (req, res) => {
   console.log("persistence.get all");
   let dir = getFullDir();
   let fileNames = fs

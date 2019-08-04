@@ -2,7 +2,6 @@ import * as uuidv4 from "uuid/v4";
 import { IdType } from "./types";
 import ItemBase from "./ItemBase";
 import Symbol from "./Symbol";
-import { symbol } from "prop-types";
 
 class SymbolLib extends ItemBase {
   id: IdType;
@@ -26,7 +25,7 @@ class SymbolLib extends ItemBase {
   }
 
   public createSymbol(id: string, name: string, content: string): Symbol {
-    const symbol = new Symbol(this.id, id, name, content);
+    const symbol = new Symbol(id, name, content);
     this.symbols.push(symbol);
     return symbol;
   }

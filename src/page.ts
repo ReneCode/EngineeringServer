@@ -1,18 +1,16 @@
 const uuidv4 = require("uuid/v4");
-import Placement from "./placement";
+import Placement from "./Placement";
 import { IdType } from "./types";
 import ItemBase from "./ItemBase";
 
 class Page extends ItemBase {
   id: IdType;
-  projectId: string;
   name: string;
   placements: Placement[] = [];
 
-  constructor(projectId: string, name: string) {
+  constructor(name: string) {
     super("page");
     this.id = uuidv4();
-    this.projectId = projectId;
     this.name = name;
   }
 

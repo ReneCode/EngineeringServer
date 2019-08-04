@@ -11,6 +11,7 @@ const schema = buildSchema(`
 
     symbolLibs: [SymbolLib]
     symbolLib(id: ID!): SymbolLib
+    symbolLibByName(name: String!): SymbolLib
   }
 
   type Mutation {
@@ -38,7 +39,6 @@ const schema = buildSchema(`
   }
 
   type Symbol {
-    symbolLibId: ID
     id: ID
     name: String,
     content: String
@@ -112,7 +112,6 @@ const schema = buildSchema(`
   }
 
   type Page {
-    projectId: ID,
     id: ID,
     name: String
     placements: [Placement]

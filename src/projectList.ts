@@ -1,4 +1,4 @@
-import Project from "./project";
+import Project from "./Project";
 import { IdType } from "./types";
 
 class ProjectList {

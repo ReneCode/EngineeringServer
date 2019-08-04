@@ -1,7 +1,7 @@
 import * as uuidv4 from "uuid/v4";
-import Page from "./page";
+import Page from "./Page";
 import { IdType } from "./types";
-import Element from "./element";
+import Element from "./Element";
 import ItemBase from "./ItemBase";
 
 class Project extends ItemBase {
@@ -32,7 +32,7 @@ class Project extends ItemBase {
   }
 
   createPage(name: string): Page {
-    const page = new Page(this.id, name);
+    const page = new Page(name);
     this.pages.push(page);
     return page;
   }

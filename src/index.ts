@@ -4,7 +4,7 @@ const graphqlHTTP = require("express-graphql");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-import persistence from "./persistence";
+import persistence from "./persistence/persistence";
 import schema from "./schema";
 import rootValue from "./rootValue";
 import initData from "./initData";

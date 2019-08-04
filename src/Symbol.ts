@@ -1,18 +1,16 @@
 import * as uuidv4 from "uuid/v4";
 import { IdType } from "./types";
 import ItemBase from "./ItemBase";
-import Placement from "./placement";
+import Placement from "./Placement";
 
 class Symbol extends ItemBase {
-  symbolLibId: IdType;
   name: string;
   content: string;
   id: IdType;
   placements: Placement[] = [];
 
-  constructor(symbolLibId: IdType, id: IdType, name: string, content: string) {
+  constructor(id: IdType, name: string, content: string) {
     super("symbol");
-    this.symbolLibId = symbolLibId;
     this.id = id || uuidv4();
     this.name = name;
     this.content = content;

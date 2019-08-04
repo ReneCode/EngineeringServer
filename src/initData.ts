@@ -1,7 +1,9 @@
-import projectList from "./projectList";
+import projectList from "./ProjectList";
+import createId from "./util/createId";
 
 const initData = () => {
-  const project = projectList.createProject("new project");
+  const id = createId();
+  const project = projectList.createProject(id, "new project");
   project.createPage("new page A");
   project.createPage("new page B");
   // add new project & pages

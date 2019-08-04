@@ -1,7 +1,7 @@
 const { createProject, deleteProject } = require("./util");
 import ItemFactory from "../src/ItemFactory";
-import Project from "../src/project";
-import Page from "../src/page";
+import Project from "../src/Project";
+import Page from "../src/Page";
 
 describe("persistence", () => {
   it("save", () => {
