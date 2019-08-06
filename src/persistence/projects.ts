@@ -4,9 +4,9 @@ import path = require("path");
 import os = require("os");
 
 import rootValue from "../rootValue";
-import projectList from "../projectList";
+import projectList from "../ProjectList";
 import ItemFactory from "../ItemFactory";
-import Project from "../project";
+import Project from "../Project";
 
 const router = express.Router();
 
