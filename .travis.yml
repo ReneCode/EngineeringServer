@@ -6,6 +6,9 @@ sudo: required
 git:
   depth: 999
 
+before_install:
+  - npm install -g yarn
+
 install:
   - yarn install
 
