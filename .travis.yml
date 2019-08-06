@@ -1,13 +1,14 @@
 language: node_js
-node_js: 11.10.0
+# node_js: 11.10.0
+node_js: lts/*
 dist: trusty
 sudo: required
 
 git:
   depth: 999
 
-before_install:
-  - npm install -g yarn
+# before_install:
+#   - npm install -g yarn
 
 install:
   - yarn install
