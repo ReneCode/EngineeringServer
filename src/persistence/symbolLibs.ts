@@ -1,13 +1,11 @@
 import express = require("express");
 import fs = require("fs");
 import path = require("path");
-import os = require("os");
 import HttpStatus = require("http-status");
 
 import rootValue from "../rootValue";
 import symbolLibList from "../SymbolLibList";
 import ItemFactory from "../ItemFactory";
-import Project from "../project";
 import getStorageDir from "./getStorageDir";
 import getStorageFileName from "./getStorageFileName";
 import SymbolLib from "../SymbolLib";
@@ -20,11 +18,10 @@ router.post("/", (req, res) => {
   const symbolLibName = req.body.name;
   console.log("persistence-symbolLib.POST:", symbolLibName);
 
-  let project = rootValue.symbolLibs().find(sl => sl.name === symbolLibName);
-  if (project) {
-    console.log(project);
+  let symbolLib = rootValue.symbolLibs().find(sl => sl.name === symbolLibName);
+  if (symbolLib) {
     const fileName = getStorageFileName(storageDir, symbolLibName);
-    fs.writeFileSync(fileName, JSON.stringify(project));
+    fs.writeFileSync(fileName, JSON.stringify(symbolLib));
     res.send();
   } else {
     res.status(HttpStatus.BAD_REQUEST);
