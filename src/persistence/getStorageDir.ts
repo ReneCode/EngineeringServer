@@ -6,8 +6,12 @@ const getStorageDir = (subDir: string = "") => {
   if (subDir) {
     dir = path.join(dir, subDir);
   }
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch (err) {
+    console.log("err:", err);
   }
   return dir;
 };
