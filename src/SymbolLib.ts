@@ -2,6 +2,7 @@ import * as uuidv4 from "uuid/v4";
 import { IdType } from "./types";
 import ItemBase from "./ItemBase";
 import Symbol from "./Symbol";
+import ItemFactory from "./ItemFactory";
 
 class SymbolLib extends ItemBase {
   id: IdType;
@@ -21,7 +22,9 @@ class SymbolLib extends ItemBase {
 
   static fromJSON(json: any): SymbolLib {
     const project = Object.create(SymbolLib.prototype);
-    return Object.assign(project, json, {});
+    return Object.assign(project, json, {
+      symbols: ItemFactory.fromJSON(json.symbols)
+    });
   }
 
   public createSymbol(id: string, name: string, content: string): Symbol {

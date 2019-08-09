@@ -4,6 +4,7 @@ import Page from "./Page";
 import Placement from "./Placement";
 import Project from "./Project";
 import SymbolLib from "./SymbolLib";
+import Symbol from "./Symbol";
 
 class ItemFactory {
   static fromJSON(json: any): ItemBase | Array<ItemBase> {
@@ -25,6 +26,8 @@ class ItemFactory {
         return Project.fromJSON(json);
       case "symbolLib":
         return SymbolLib.fromJSON(json);
+      case "symbol":
+        return Symbol.fromJSON(json);
       default:
         // console.log("bad item type:", json.type);
         throw new Error("bad item type:" + itemType + " / " + json);
