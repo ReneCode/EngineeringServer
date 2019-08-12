@@ -1,4 +1,5 @@
 import { IdType, ParentType } from "./types";
+import Project from "./Project";
 
 export interface Input<I> {
   input: I;
@@ -33,7 +34,11 @@ export interface CreateProjectInput {
   name: string;
   id: IdType;
 }
-
+export interface UpdateProjectInput {
+  id: IdType;
+  name: string;
+  symbolLibNames: string[];
+}
 export interface DeleteProjectInput {
   id: IdType;
 }

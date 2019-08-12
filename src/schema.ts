@@ -16,6 +16,7 @@ const schema = buildSchema(`
 
   type Mutation {
     createProject(input: CreateProjectInput!): Project
+    updateProject(input: UpdateProjectInput!): Project
     deleteProject(input: DeleteProjectInput!): ID
 
     createPage(input: CreatePageInput!): Page
@@ -79,23 +80,28 @@ const schema = buildSchema(`
     id: ID!
   }
 
-  input CreateProjectInput {
-    name: String!
-    id: ID
-  }
-  input DeleteProjectInput {
-    id: ID!
-  }
-
   type Project {
-    id: ID,
-    name: String,
-    pages: [Page],
-    page(id: ID!): Page,
+    id: ID
+    name: String
+    symbolLibNames: [String]
+    pages: [Page]
+    page(id: ID!): Page
 
     elements: [Element]
   }
 
+  input CreateProjectInput {
+    name: String!
+    id: ID
+  }
+  input UpdateProjectInput {
+    id: ID!
+    name: String
+    symbolLibNames: [String]
+  }
+  input DeleteProjectInput {
+    id: ID!
+  }
 
   input CreatePageInput {
     projectId: ID!,

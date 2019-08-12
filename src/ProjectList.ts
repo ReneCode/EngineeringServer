@@ -14,6 +14,28 @@ class ProjectList {
     return p;
   }
 
+  updateProject(
+    id: string,
+    name: string,
+    symbolLibNames: string[]
+  ): Project | undefined {
+    let foundProject = undefined;
+    this.projects = this.projects.map(project => {
+      if (project.id === id) {
+        console.log(":", symbolLibNames);
+        if (symbolLibNames) {
+          project.symbolLibNames = symbolLibNames;
+        }
+        if (name) {
+          project.name = name;
+        }
+        foundProject = project;
+      }
+      return project;
+    });
+    return foundProject;
+  }
+
   deleteProject(id: IdType): IdType {
     this.projects = this.projects.filter(p => p.id !== id);
     return id;

@@ -64,6 +64,16 @@ const rootValue = {
     rlog("createProject");
     return projectList.createProject(input.id, input.name);
   },
+  updateProject: ({
+    input
+  }: I.Input<I.UpdateProjectInput>): Project | undefined => {
+    rlog("updateProject");
+    return projectList.updateProject(
+      input.id,
+      input.name,
+      input.symbolLibNames
+    );
+  },
 
   deleteProject: ({ input }: I.Input<I.DeleteProjectInput>): IdType => {
     rlog("deleteProject");

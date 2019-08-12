@@ -8,20 +8,24 @@ export const gql = async (query: string, variables: object = {}) => {
     variables
   };
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: JSON.stringify(cmd)
-  });
-  return await res.json();
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(cmd)
+    });
+    return await res.json();
+  } catch (err) {
+    console.log("Error:", err);
+  }
 };
 
 export const getProjects = async () => {
   const query = `{
-    projects { id name}
+    projects { id name symbolLibNames }
   }`;
   const json = await gql(query);
   return json.data.projects;

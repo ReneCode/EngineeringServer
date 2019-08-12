@@ -7,6 +7,7 @@ import ItemBase from "./ItemBase";
 class Project extends ItemBase {
   id: IdType;
   name: string;
+  symbolLibNames: string[];
   pages: Page[] = [];
   elements: Element[] = [];
 
@@ -14,6 +15,7 @@ class Project extends ItemBase {
     super("project");
     this.id = id || uuidv4();
     this.name = name;
+    this.symbolLibNames = [];
   }
 
   toJSON(): object {
