@@ -21,6 +21,13 @@ https://blog.lifeishao.com/2017/03/24/custom-nodejs-deployment-on-azure-web-app/
 
 - set travis AZURE_WA_SITE, AZURE_WA_USERNAME, AZURE_WA_PASSWORD environment variables
 
+- configuration / general settings /
+
+  - Always on: true
+  - Web sockets: true
+
+  ( use websocket in client: wss://servername.con)
+
 # use application insight for logging
 
 https://docs.microsoft.com/de-de/azure/azure-monitor/app/nodejs
@@ -28,4 +35,3 @@ https://docs.microsoft.com/de-de/azure/azure-monitor/app/nodejs
 # vscode shortcuts
 
 https://zellwk.com/blog/useful-vscode-keyboard-shortcuts/
-
