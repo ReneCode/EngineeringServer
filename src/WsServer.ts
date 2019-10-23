@@ -17,19 +17,15 @@ class WsServer {
     this.onMessage = this.onMessage.bind(this);
   }
 
-  listen(port: number) {
-    const wsHttpServer = http.createServer();
-    wsHttpServer.listen(port, () => {
-      console.log("##### WebServer listening on port 8081");
-    });
+  listen(httpServer: any) {
     const wsServer = new WebSocketServer({
-      httpServer: wsHttpServer,
+      httpServer: httpServer,
       autoAcceptConnections: false
     });
     this.wsServer = wsServer;
 
     wsServer.on("request", (request: any) => {
-      console.log("####WEBSOCKET request:");
+      console.log("#WEBSOCKET request");
       if (!this.allowWsRequest(request.origin)) {
         request.reject();
         return;
@@ -42,7 +38,7 @@ class WsServer {
       );
 
       connection.on("close", (reasonCode: any, description: any) => {
-        console.log("#WEBSOCKET connection closed");
+        console.log("#WEBSOCKET close");
       });
     });
   }

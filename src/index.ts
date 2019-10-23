@@ -3,6 +3,8 @@ const cors = require("cors");
 const graphqlHTTP = require("express-graphql");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const http = require("http");
+const https = require("https");
 
 import persistence from "./persistence/persistence";
 import schema from "./schema";
@@ -42,11 +44,11 @@ app.get("/", (req: any, res: any) => {
   );
 });
 
-const wsServer = new WsServer();
-wsServer.listen(8081);
-
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  initData();
+const httpServer = http.createServer(app);
+httpServer.listen(port, () => {
   console.log("app listening on port:", port);
 });
+
+const wsServer = new WsServer();
+wsServer.listen(httpServer);
