@@ -9,6 +9,7 @@ import schema from "./schema";
 import rootValue from "./rootValue";
 import initData from "./initData";
 import applicationInsightsLogger from "./applicationInsightsLogger";
+import WsServer from "./WsServer";
 
 require("dotenv").config();
 const app = express();
@@ -40,6 +41,9 @@ app.get("/", (req: any, res: any) => {
     'hi, engineering server is running. Try <a href="/graphql">graphql</a>.'
   );
 });
+
+const wsServer = new WsServer();
+wsServer.listen(8081);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

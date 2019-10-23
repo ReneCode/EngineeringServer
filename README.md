@@ -24,3 +24,8 @@ https://blog.lifeishao.com/2017/03/24/custom-nodejs-deployment-on-azure-web-app/
 # use application insight for logging
 
 https://docs.microsoft.com/de-de/azure/azure-monitor/app/nodejs
+
+# vscode shortcuts
+
+https://zellwk.com/blog/useful-vscode-keyboard-shortcuts/
+
