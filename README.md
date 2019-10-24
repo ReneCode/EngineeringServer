@@ -35,3 +35,19 @@ https://docs.microsoft.com/de-de/azure/azure-monitor/app/nodejs
 # vscode shortcuts
 
 https://zellwk.com/blog/useful-vscode-keyboard-shortcuts/
+
+# jest
+
+If the test creates a file, that in watch mode jest re-runs the test => infinite loop.
+
+To prevent that - just add in `jest.config.js` (ignore new files in the `data` folder)
+
+```
+module.exports = {
+  watchPathIgnorePatterns: ["/data/"]
+};
+```
+
+# postgress db
+
+https://docs.microsoft.com/de-de/azure/postgresql/quickstart-create-server-database-portal

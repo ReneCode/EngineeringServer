@@ -1,4 +1,6 @@
-const http = require("http");
+import Multiplayer from "./ObjectStore/Multiplayer";
+import { objectStoreRequest } from "./ObjectStore/ObjectStoreList";
+
 const WebSocketServer = require("websocket").server;
 
 // https://github.com/theturtle32/WebSocket-Node
@@ -55,14 +57,12 @@ class WsServer {
       if (connection === sendConnection) {
         me = true;
       }
-      const obj = {
-        me,
-        data: message.utf8Data
-      };
       // connection.sendUTF(message.utf8Data);
-      const inMessage = JSON.parse(message.utf8Data);
+      const inMessage: Multiplayer.ClientMessage = JSON.parse(message.utf8Data);
 
-      const outMessage = {
+      const result = objectStoreRequest(inMessage);
+
+      const outMessage: Multiplayer.ServerMessage = {
         me,
         result: "ok",
         type: inMessage.type,

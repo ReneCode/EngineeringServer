@@ -7,6 +7,7 @@ const http = require("http");
 const https = require("https");
 
 import persistence from "./persistence/persistence";
+import objectstoreRouting from "./persistence/objectStoreRouting";
 import schema from "./schema";
 import rootValue from "./rootValue";
 import initData from "./initData";
@@ -36,6 +37,7 @@ const graphql = graphqlHTTP({
 });
 app.use("/graphql", graphql);
 
+app.use("/canvas", objectstoreRouting);
 app.use("/persistence", persistence);
 
 app.get("/", (req: any, res: any) => {
@@ -43,6 +45,8 @@ app.get("/", (req: any, res: any) => {
     'hi, engineering server is running. Try <a href="/graphql">graphql</a>.'
   );
 });
+
+// initData();
 
 const port = process.env.PORT || 8080;
 const httpServer = http.createServer(app);
