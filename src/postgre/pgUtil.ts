@@ -4,22 +4,37 @@ require("dotenv").config();
 const pool = new Pool();
 
 const getPostgresClient = () => {
-  const client = new Client({
+  let options: any = {
     host: process.env.PGHOST,
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
     database: "postgres"
-  });
+  };
+
+  const database = "postgres"; // process.env.PGDATABASE;
+  const user = process.env.PGUSER;
+  const password = process.env.PGPASSWORD;
+  const host = process.env.PGHOST;
+  const port = process.env.PGPORT;
+  options = {
+    connectionString: `host=${host} port=${port} dbname=${database} user=${user} password=${password} sslmode=require`
+  };
+  console.log("O:", options);
+  const client = new Client(options);
   return client;
 };
 
 const getDatabase = async () => {
-  const client = getPostgresClient();
-  client.connect();
-  const res = await client.query("SELECT datname from pg_database");
-  client.end();
-  return res.rows.map((r: any) => r.datname);
+  try {
+    const client = getPostgresClient();
+    client.connect();
+    const res = await client.query("SELECT datname from pg_database");
+    client.end();
+    return res.rows.map((r: any) => r.datname);
+  } catch (err) {
+    console.log("Error getDatabase:", err);
+  }
 };
 
 const createDatabaseIfNotExists = async (name: string) => {
