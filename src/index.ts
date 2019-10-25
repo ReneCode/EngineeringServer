@@ -8,6 +8,7 @@ const https = require("https");
 
 import persistence from "./persistence/persistence";
 import objectstoreRouting from "./persistence/objectStoreRouting";
+import adminRouting from "./routing/adminRouting";
 import schema from "./schema";
 import rootValue from "./rootValue";
 import initData from "./initData";
@@ -37,7 +38,8 @@ const graphql = graphqlHTTP({
 });
 app.use("/graphql", graphql);
 
-app.use("/canvas", objectstoreRouting);
+app.use("/api/objectstore", objectstoreRouting);
+app.use("/api/admin", adminRouting);
 app.use("/persistence", persistence);
 
 app.get("/", (req: any, res: any) => {

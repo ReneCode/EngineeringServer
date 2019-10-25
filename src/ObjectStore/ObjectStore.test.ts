@@ -84,11 +84,11 @@ describe("objectstore", () => {
     };
     expect(store.request(message)).toEqual("ok");
     expect(store.items["o1"].children).toHaveLength(1);
-    store.save("output");
+    const jsonString = store.export();
 
     // reload json
     const storeB = createObjectStore("B");
-    storeB.load("output");
+    storeB.import(jsonString);
     expect(storeB.items["o1"]).toBeTruthy();
     expect(storeB.items["o2"]).toBeTruthy();
     expect(storeB.items["o3"]).toBeFalsy();

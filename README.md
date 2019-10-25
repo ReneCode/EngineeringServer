@@ -51,3 +51,28 @@ module.exports = {
 # postgress db
 
 https://docs.microsoft.com/de-de/azure/postgresql/quickstart-create-server-database-portal
+
+connect to local:
+
+    psql <database> <user>
+
+connect to azure postgress:
+
+    psql --host=<host>.postgres.database.azure.com --port=5432 --username=<user>@<host> --dbname=<database>
+
+# express
+
+const router = express.Router();
+
+// url parameter
+// myserver.com/abc => name = abc
+router.get("/:name", (req, res) => {
+const name = req.params.name;
+...
+}
+
+// query parameter
+// myserver.com?name=abc => name = abc
+router.get("/", (req, res) => {
+const name = req.query.name;
+})

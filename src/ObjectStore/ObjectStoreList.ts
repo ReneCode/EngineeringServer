@@ -3,6 +3,10 @@ import Multiplayer from "./Multiplayer";
 
 const objectStoreList: Record<string, ObjectStore> = {};
 
+export const getObjectStoreId = (type: string, name: string) => {
+  return `${type}-${name}`;
+};
+
 export const createObjectStore = (id: string) => {
   if (objectStoreList[id]) {
     throw new Error(`createObjectStore: id: ${id} already exists`);

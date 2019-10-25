@@ -25,19 +25,30 @@ class ObjectStore {
     this.items[object.oid] = object;
   }
 
-  public load(name: string) {
-    const fileName = getDataFileName("objectstore", name);
-    let jsonString = fs.readFileSync(fileName).toString();
+  public import(jsonString: string) {
     const json: Multiplayer.ObjectType = JSON.parse(jsonString);
     this.root = json;
     this.addItem(this.root);
   }
 
-  public save(name: string) {
-    const fileName = getDataFileName("objectstore", name);
+  public export() {
     const data = JSON.stringify(this.root);
-    fs.writeFileSync(fileName, data);
+    return data;
   }
+
+  // public load(type: string, name: string) {
+  //   const fileName = getDataFileName(type, name);
+  //   let jsonString = fs.readFileSync(fileName).toString();
+  //   const json: Multiplayer.ObjectType = JSON.parse(jsonString);
+  //   this.root = json;
+  //   this.addItem(this.root);
+  // }
+
+  // public save(type: string, name: string) {
+  //   const fileName = getDataFileName(type, name);
+  //   const data = JSON.stringify(this.root);
+  //   fs.writeFileSync(fileName, data);
+  // }
 
   public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
     const { type, obj } = message;
