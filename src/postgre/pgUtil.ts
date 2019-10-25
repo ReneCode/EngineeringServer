@@ -12,15 +12,14 @@ const getPostgresClient = () => {
     database: "postgres"
   };
 
-  const database = "postgres"; // process.env.PGDATABASE;
-  const user = process.env.PGUSER;
-  const password = process.env.PGPASSWORD;
-  const host = process.env.PGHOST;
-  const port = process.env.PGPORT;
-  options = {
-    connectionString: `host=${host} port=${port} dbname=${database} user=${user} password=${password} sslmode=require`
-  };
-  console.log("O:", options);
+  // const database = "postgres"; // process.env.PGDATABASE;
+  // const user = process.env.PGUSER;
+  // const password = process.env.PGPASSWORD;
+  // const host = process.env.PGHOST;
+  // const port = process.env.PGPORT;
+  // options = {
+  //   connectionString: `host=${host} port=${port} dbname=${database} user=${user} password=${password} sslmode=require`
+  // };
   const client = new Client(options);
   return client;
 };
