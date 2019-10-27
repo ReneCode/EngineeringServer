@@ -8,17 +8,13 @@ const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
 
 class ObjectStore {
-  private root: Multiplayer.ObjectType;
-  private items: Record<string, Multiplayer.ObjectType> = {};
-  private name: string;
+  root: Multiplayer.ObjectType;
+  items: Record<string, Multiplayer.ObjectType> = {};
+  name: string;
 
   constructor(name: string) {
     this.name = name;
     this.root = { oid: "root", props: {}, children: [] };
-  }
-
-  getRoot(): any {
-    return this.root;
   }
 
   private addItem(object: Multiplayer.ObjectType) {
@@ -33,16 +29,6 @@ class ObjectStore {
     this.items[object.oid] = object;
   }
 
-  // public async load(type: string, name: string) {
-  //   const data = await pgUtil.getObjectStoreData(type, name);
-  //   this.import(data);
-  // }
-
-  // public async save(type: any, name: any) {
-  //   const data = this.export();
-  //   await pgUtil.setObjectStoreData(type, name, data);
-  // }
-
   public import(jsonString: string) {
     const json: Multiplayer.ObjectType = JSON.parse(jsonString);
     if (json) {
@@ -55,20 +41,6 @@ class ObjectStore {
     const data = JSON.stringify(this.root);
     return data;
   }
-
-  // public load(type: string, name: string) {
-  //   const fileName = getDataFileName(type, name);
-  //   let jsonString = fs.readFileSync(fileName).toString();
-  //   const json: Multiplayer.ObjectType = JSON.parse(jsonString);
-  //   this.root = json;
-  //   this.addItem(this.root);
-  // }
-
-  // public save(type: string, name: string) {
-  //   const fileName = getDataFileName(type, name);
-  //   const data = JSON.stringify(this.root);
-  //   fs.writeFileSync(fileName, data);
-  // }
 
   public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
     const { type, obj } = message;
