@@ -9,7 +9,7 @@ router.get("/:type", async (req, res) => {
   try {
     switch (type) {
       case "init":
-        const result = await pgUtil.createDatabaseIfNotExists("engineering");
+        const result = await pgUtil.initDatabase();
         res.send(result ? "OK" : "failed");
         break;
 

@@ -60,6 +60,27 @@ connect to azure postgress:
 
     psql --host=<host>.postgres.database.azure.com --port=5432 --username=<user>@<host> --dbname=<database>
 
+    CREATE TABLE objectstore(
+        id serial primary key,
+        name varchar not null,
+        type varchar not null,
+        data text);
+
+    DROP TABLE [IF EXISTS] table_name [CASCADE | RESTRICT];
+
+
+    INSERT INTO table(column1, column2, …)
+        VALUES (value1, value2, …);
+
+    DELETE FROM table
+      WHERE condition;
+
+    UPDATE table
+      SET column1 = value1,
+          column2 = value2 ,...
+      WHERE
+        condition;
+
 # express
 
 const router = express.Router();

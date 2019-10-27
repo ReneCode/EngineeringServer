@@ -2,6 +2,7 @@ import fs = require("fs");
 import Multiplayer from "./Multiplayer";
 import { getDataFileName } from "../util/getDataFileName";
 import { ok } from "assert";
+import pgUtil from "../postgre/pgUtil";
 
 const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
@@ -17,6 +18,9 @@ class ObjectStore {
   }
 
   private addItem(object: Multiplayer.ObjectType) {
+    if (!object) {
+      return;
+    }
     if (object.children) {
       for (let child of object.children) {
         this.addItem(child);
@@ -24,6 +28,16 @@ class ObjectStore {
     }
     this.items[object.oid] = object;
   }
+
+  // public async load(type: string, name: string) {
+  //   const data = await pgUtil.getObjectStoreData(type, name);
+  //   this.import(data);
+  // }
+
+  // public async save(type: any, name: any) {
+  //   const data = this.export();
+  //   await pgUtil.setObjectStoreData(type, name, data);
+  // }
 
   public import(jsonString: string) {
     const json: Multiplayer.ObjectType = JSON.parse(jsonString);

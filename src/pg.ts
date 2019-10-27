@@ -1,9 +1,9 @@
 import pgUtil from "./postgre/pgUtil";
 
 const init = async () => {
-  await pgUtil.createDatabaseIfNotExists("engineering");
-  const d = await pgUtil.getDatabase();
-  console.log(d);
+  // await pgUtil.createDatabaseIfNotExists("engineering");
+  // const d = await pgUtil.getDatabase();
+  // console.log(d);
 };
 
 init().then(() => {

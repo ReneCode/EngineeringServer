@@ -7,7 +7,7 @@ const http = require("http");
 const https = require("https");
 
 import persistence from "./persistence/persistence";
-import objectstoreRouting from "./persistence/objectStoreRouting";
+import objectstoreRouting from "./routing/objectStoreRouting";
 import adminRouting from "./routing/adminRouting";
 import schema from "./schema";
 import rootValue from "./rootValue";

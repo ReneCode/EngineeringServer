@@ -87,7 +87,7 @@ describe("objectstore", () => {
     const jsonString = store.export();
 
     // reload json
-    const storeB = createObjectStore("B");
+    const storeB = createObjectStore("type", "B");
     storeB.import(jsonString);
     expect(storeB.items["o1"]).toBeTruthy();
     expect(storeB.items["o2"]).toBeTruthy();
@@ -96,7 +96,7 @@ describe("objectstore", () => {
 
   it("reparent insert into correct order", () => {
     const storeName = "A";
-    const store = createObjectStore(storeName);
+    const store = createObjectStore("type", storeName);
 
     // create first object
     let message: Multiplayer.ClientMessage = {
