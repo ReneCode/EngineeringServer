@@ -11,6 +11,7 @@ export namespace Multiplayer {
   // response of the server
   export type ServerMessage = {
     me: boolean;
+    store: string;
     result: ResultType;
     type: ActionType;
     obj: ObjectType;

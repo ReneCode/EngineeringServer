@@ -29,6 +29,7 @@ class WsServer {
     wsServer.on("request", (request: any) => {
       console.log("#WEBSOCKET request");
       if (!this.allowWsRequest(request.origin)) {
+        console.log(`websocket request not allowed`);
         request.reject();
         return;
       }
@@ -41,6 +42,8 @@ class WsServer {
 
       connection.on("close", (reasonCode: any, description: any) => {
         console.log("#WEBSOCKET close");
+        // remove from connections
+        this.connections = this.connections.filter(c => c !== connection);
       });
     });
   }
@@ -64,7 +67,8 @@ class WsServer {
 
       const outMessage: Multiplayer.ServerMessage = {
         me,
-        result: "ok",
+        result: result,
+        store: inMessage.store,
         type: inMessage.type,
         obj: inMessage.obj
       };

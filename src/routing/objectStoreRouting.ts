@@ -73,7 +73,7 @@ router.get("/:type/:id", async (req, res) => {
       store = createObjectStore(id);
       store.import(project.data);
     }
-    res.json(store.root);
+    res.json(store.getRoot());
   } catch (ex) {
     console.log(ex);
     res.sendStatus(500);
@@ -94,7 +94,7 @@ router.post("/:type/:id", async (req, res) => {
       return;
     }
 
-    const data = JSON.stringify(store.root);
+    const data = JSON.stringify(store.getRoot());
     await pgUtil.updateObjectStoreData(type, id, data);
 
     res.sendStatus(HttpStatus.OK);

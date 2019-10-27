@@ -26,6 +26,7 @@ export const objectStoreRequest = (
   const id = message.store;
   let store = objectStoreList[id];
   if (!store) {
+    console.log(`ObjectStore: ${id} not found`);
     return "reject";
   }
 

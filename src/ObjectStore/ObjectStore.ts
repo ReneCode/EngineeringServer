@@ -8,13 +8,17 @@ const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
 
 class ObjectStore {
-  root: Multiplayer.ObjectType;
-  items: Record<string, Multiplayer.ObjectType> = {};
-  name: string;
+  private root: Multiplayer.ObjectType;
+  private items: Record<string, Multiplayer.ObjectType> = {};
+  private name: string;
 
   constructor(name: string) {
     this.name = name;
     this.root = { oid: "root", props: {}, children: [] };
+  }
+
+  getRoot(): any {
+    return this.root;
   }
 
   private addItem(object: Multiplayer.ObjectType) {
@@ -41,8 +45,10 @@ class ObjectStore {
 
   public import(jsonString: string) {
     const json: Multiplayer.ObjectType = JSON.parse(jsonString);
-    this.root = json;
-    this.addItem(this.root);
+    if (json) {
+      this.root = json;
+      this.addItem(this.root);
+    }
   }
 
   public export() {
@@ -68,14 +74,16 @@ class ObjectStore {
     const { type, obj } = message;
     switch (type) {
       case "create":
+        console.log(`WS: create: ${obj.oid}`);
         if (!obj.oid) {
           throw new Error("ObjectStore.request create: oid missing");
         }
         if (this.items[obj.oid]) {
-          // oid already exists
+          console.log(`oid: ${obj.oid} already exists`);
           return "reject";
         }
         this.items[obj.oid] = obj;
+        this.reparent(obj);
         return "ok";
 
       case "update":
@@ -85,7 +93,7 @@ class ObjectStore {
           }
           const foundObject = this.items[obj.oid];
           if (!foundObject) {
-            // object not there
+            console.log(`object with oid: ${obj.oid} not found`);
             return "reject";
           }
           const newParent = obj.props[PARENT_PROP];
@@ -95,7 +103,7 @@ class ObjectStore {
           }
           foundObject.props = { ...foundObject.props, ...obj.props };
           if (reparent) {
-            this.reparent(foundObject, newParent);
+            this.reparent(foundObject);
           }
         }
         return "ok";
@@ -113,7 +121,11 @@ class ObjectStore {
     }
   }
 
-  reparent(obj: Multiplayer.ObjectType, parentProp: string[]): boolean {
+  reparent(obj: Multiplayer.ObjectType): boolean {
+    const parentProp = obj.props[PARENT_PROP];
+    if (!parentProp) {
+      return true;
+    }
     const [parentId, fIndex] = parentProp;
     let parentItem: Multiplayer.ObjectType;
     if (parentId === ROOT_OID) {
