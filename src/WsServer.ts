@@ -55,15 +55,16 @@ class WsServer {
 
   onMessage(sendConnection: any, message: any) {
     // console.log("#WEBSOCKET message received:", message.utf8Data);
+
+    const inMessage: Multiplayer.ClientMessage = JSON.parse(message.utf8Data);
+    const result = objectStoreRequest(inMessage);
+
     for (let connection of this.connections) {
       let me = false;
       if (connection === sendConnection) {
         me = true;
       }
       // connection.sendUTF(message.utf8Data);
-      const inMessage: Multiplayer.ClientMessage = JSON.parse(message.utf8Data);
-
-      const result = objectStoreRequest(inMessage);
 
       const outMessage: Multiplayer.ServerMessage = {
         me,

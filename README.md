@@ -52,6 +52,8 @@ module.exports = {
 
 https://docs.microsoft.com/de-de/azure/postgresql/quickstart-create-server-database-portal
 
+http://www.postgresqltutorial.com/
+
 connect to local:
 
     psql <database> <user>
