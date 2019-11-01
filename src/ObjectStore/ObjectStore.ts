@@ -43,66 +43,73 @@ class ObjectStore {
   }
 
   public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
-    const { type, obj } = message;
-    switch (type) {
-      case "create": {
-        const object = obj as Multiplayer.ObjectType;
-        const oid = object.oid;
-        console.log(`WS: create: ${oid}`);
-        if (!oid) {
-          throw new Error("ObjectStore.request create: oid missing");
-        }
-        if (this.items[oid]) {
-          console.log(`oid: ${oid} already exists`);
-          return "reject";
-        }
-        this.items[oid] = object;
-        this.reparent(object);
-        return "ok";
-      }
-
-      case "update": {
-        const object = obj as Multiplayer.ObjectType;
-        const oid = object.oid;
-
-        if (!oid) {
-          throw new Error("ObjectStore.request update: oid missing");
-        }
-        const foundObject = this.items[oid];
-        if (!foundObject) {
-          console.log(`object with oid: ${oid} not found`);
-          return "reject";
-        }
-        const newParent = object.props[PARENT_PROP];
-        let reparent = false;
-        if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
-          reparent = true;
-        }
-        foundObject.props = { ...foundObject.props, ...object.props };
-        if (reparent) {
-          this.reparent(foundObject);
-        }
-        return "ok";
-      }
-
-      case "remove": {
-        console.log("remove:", obj);
-        const oids = obj as string[];
-        for (let oid of oids) {
-          const obj = this.items[oid];
-          delete this.items[oid];
-          const parent = this.getParent(obj);
-          if (parent && parent.children) {
-            parent.children = parent.children.filter(i => i !== obj);
+    try {
+      const { type, obj } = message;
+      switch (type) {
+        case "create": {
+          const object = obj as Multiplayer.ObjectType;
+          const oid = object.oid;
+          console.log(`WS: create: ${oid}`);
+          if (!oid) {
+            throw new Error("ObjectStore.request create: oid missing");
           }
-          // TODO remove child items
+          if (this.items[oid]) {
+            console.log(`oid: ${oid} already exists`);
+            return "reject";
+          }
+          this.items[oid] = object;
+          this.reparent(object);
+          return "ok";
         }
 
-        return "ok";
-      }
+        case "update": {
+          const object = obj as Multiplayer.ObjectType;
+          const oid = object.oid;
 
-      default:
-        throw new Error(`ObjectStore.request: bad message type:${type}`);
+          if (!oid) {
+            throw new Error("ObjectStore.request update: oid missing");
+          }
+          const foundObject = this.items[oid];
+          if (!foundObject) {
+            console.log(`object with oid: ${oid} not found`);
+            return "reject";
+          }
+          const newParent = object.props[PARENT_PROP];
+          let reparent = false;
+          if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
+            reparent = true;
+          }
+          foundObject.props = { ...foundObject.props, ...object.props };
+          if (reparent) {
+            this.reparent(foundObject);
+          }
+          return "ok";
+        }
+
+        case "remove": {
+          console.log("remove:", obj);
+          const oids = obj as string[];
+          for (let oid of oids) {
+            const obj = this.items[oid];
+            delete this.items[oid];
+            const parent = this.getParent(obj);
+            if (parent && parent.children) {
+              parent.children = parent.children.filter(i => i !== obj);
+            }
+            // TODO remove child items
+          }
+
+          return "ok";
+        }
+
+        default:
+          throw new Error(`ObjectStore.request: bad message type:${type}`);
+      }
+    } catch (err) {
+      console.error("--------------");
+      console.error(err);
+      console.error("--------------");
+      return "reject";
     }
   }
 
