@@ -44,51 +44,58 @@ class ObjectStore {
 
   public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
     try {
-      const { type, obj } = message;
+      const { type, data } = message;
       switch (type) {
         case "create": {
-          const object = obj as Multiplayer.ObjectType;
-          const oid = object.oid;
-          console.log(`WS: create: ${oid}`);
-          if (!oid) {
-            throw new Error("ObjectStore.request create: oid missing");
+          const objects = data as Multiplayer.ObjectType[];
+          // check if oids are ok
+          for (let object of objects) {
+            const oid = object.oid;
+            if (this.items[oid]) {
+              throw new Error(`create: oid: ${oid} already exists`);
+            }
           }
-          if (this.items[oid]) {
-            console.log(`oid: ${oid} already exists`);
-            return "reject";
+
+          for (let object of objects) {
+            const oid = object.oid;
+            this.items[oid] = object;
+            this.reparent(object);
           }
-          this.items[oid] = object;
-          this.reparent(object);
           return "ok";
         }
 
         case "update": {
-          const object = obj as Multiplayer.ObjectType;
-          const oid = object.oid;
+          const objects = data as Multiplayer.ObjectType[];
+          // check if all oids are ok
+          for (let object of objects) {
+            const oid = object.oid;
+            if (!oid) {
+              throw new Error("update: oid missing");
+            }
+            const foundObject = this.items[oid];
+            if (!foundObject) {
+              throw new Error(`update: object with oid: ${oid} not found`);
+            }
+          }
 
-          if (!oid) {
-            throw new Error("ObjectStore.request update: oid missing");
-          }
-          const foundObject = this.items[oid];
-          if (!foundObject) {
-            console.log(`object with oid: ${oid} not found`);
-            return "reject";
-          }
-          const newParent = object.props[PARENT_PROP];
-          let reparent = false;
-          if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
-            reparent = true;
-          }
-          foundObject.props = { ...foundObject.props, ...object.props };
-          if (reparent) {
-            this.reparent(foundObject);
+          for (let object of objects) {
+            const foundObject = this.items[object.oid];
+            const newParent = object.props[PARENT_PROP];
+            let reparent = false;
+            if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
+              reparent = true;
+            }
+            foundObject.props = { ...foundObject.props, ...object.props };
+            if (reparent) {
+              this.reparent(foundObject);
+            }
           }
           return "ok";
         }
 
         case "remove": {
-          console.log("remove:", obj);
-          const oids = obj as string[];
+          console.log("remove:", data);
+          const oids = data as string[];
           for (let oid of oids) {
             const obj = this.items[oid];
             delete this.items[oid];

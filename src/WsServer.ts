@@ -54,27 +54,26 @@ class WsServer {
   }
 
   onMessage(sendConnection: any, message: any) {
-    // console.log("#WEBSOCKET message received:", message.utf8Data);
-
     const inMessage: Multiplayer.ClientMessage = JSON.parse(message.utf8Data);
+
+    // make changes persistent
     const result = objectStoreRequest(inMessage);
 
+    // broadcast the result
     for (let connection of this.connections) {
       let me = false;
       if (connection === sendConnection) {
+        // I am the sender
         me = true;
       }
-      // connection.sendUTF(message.utf8Data);
-
       const outMessage: Multiplayer.ServerMessage = {
         me,
         result: result,
         store: inMessage.store,
         type: inMessage.type,
-        obj: inMessage.obj
+        data: inMessage.data
       };
       const outData = JSON.stringify(outMessage);
-      // console.log("#WEBSOCKET send:", outData);
       connection.sendUTF(outData);
     }
   }

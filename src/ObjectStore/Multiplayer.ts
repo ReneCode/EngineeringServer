@@ -5,7 +5,7 @@ export namespace Multiplayer {
   export type ClientMessage = {
     store: string;
     type: ActionType;
-    obj: ObjectType | string[];
+    data: ObjectType[] | string[];
   };
 
   // response of the server
@@ -14,7 +14,7 @@ export namespace Multiplayer {
     store: string;
     result: ResultType;
     type: ActionType;
-    obj: ObjectType | string[];
+    data: ObjectType[] | string[];
   };
 
   export type ObjectType = {
