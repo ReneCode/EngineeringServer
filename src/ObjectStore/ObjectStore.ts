@@ -45,51 +45,77 @@ class ObjectStore {
   public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
     const { type, obj } = message;
     switch (type) {
-      case "create":
-        console.log(`WS: create: ${obj.oid}`);
-        if (!obj.oid) {
+      case "create": {
+        const object = obj as Multiplayer.ObjectType;
+        const oid = object.oid;
+        console.log(`WS: create: ${oid}`);
+        if (!oid) {
           throw new Error("ObjectStore.request create: oid missing");
         }
-        if (this.items[obj.oid]) {
-          console.log(`oid: ${obj.oid} already exists`);
+        if (this.items[oid]) {
+          console.log(`oid: ${oid} already exists`);
           return "reject";
         }
-        this.items[obj.oid] = obj;
-        this.reparent(obj);
+        this.items[oid] = object;
+        this.reparent(object);
         return "ok";
+      }
 
-      case "update":
-        {
-          if (!obj.oid) {
-            throw new Error("ObjectStore.request update: oid missing");
-          }
-          const foundObject = this.items[obj.oid];
-          if (!foundObject) {
-            console.log(`object with oid: ${obj.oid} not found`);
-            return "reject";
-          }
-          const newParent = obj.props[PARENT_PROP];
-          let reparent = false;
-          if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
-            reparent = true;
-          }
-          foundObject.props = { ...foundObject.props, ...obj.props };
-          if (reparent) {
-            this.reparent(foundObject);
-          }
+      case "update": {
+        const object = obj as Multiplayer.ObjectType;
+        const oid = object.oid;
+
+        if (!oid) {
+          throw new Error("ObjectStore.request update: oid missing");
+        }
+        const foundObject = this.items[oid];
+        if (!foundObject) {
+          console.log(`object with oid: ${oid} not found`);
+          return "reject";
+        }
+        const newParent = object.props[PARENT_PROP];
+        let reparent = false;
+        if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
+          reparent = true;
+        }
+        foundObject.props = { ...foundObject.props, ...object.props };
+        if (reparent) {
+          this.reparent(foundObject);
         }
         return "ok";
+      }
 
-      case "remove":
-        if (!obj.oid) {
-          throw new Error("ObjectStore.request remove: oid missing");
+      case "remove": {
+        console.log("remove:", obj);
+        const oids = obj as string[];
+        for (let oid of oids) {
+          const obj = this.items[oid];
+          delete this.items[oid];
+          const parent = this.getParent(obj);
+          if (parent && parent.children) {
+            parent.children = parent.children.filter(i => i !== obj);
+          }
+          // TODO remove child items
         }
-        delete this.items[obj.oid];
-        // TODO remove child items
+
         return "ok";
+      }
 
       default:
         throw new Error(`ObjectStore.request: bad message type:${type}`);
+    }
+  }
+
+  getParent(obj: Multiplayer.ObjectType): Multiplayer.ObjectType | null {
+    const parentProp = obj.props[PARENT_PROP];
+    if (!parentProp) {
+      return null;
+    }
+    const [parentId, fIndex] = parentProp;
+    if (parentId === ROOT_OID) {
+      return this.root;
+    } else {
+      return this.items[parentId];
     }
   }
 
