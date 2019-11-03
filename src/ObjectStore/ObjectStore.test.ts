@@ -12,28 +12,32 @@ describe("objectstore", () => {
     let message: Multiplayer.ClientMessage = {
       store: storeName,
       type: "create",
-      obj: {
-        oid: "o1",
-        props: { x: 50 }
-      }
+      data: [
+        {
+          oid: "o1",
+          props: { x: 50 }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
-    expect(store.items).toHaveProperty("o1", message.obj);
+    expect(store.items).toHaveProperty("o1", message.data[0]);
     expect(store.root.children).toHaveLength(0);
 
     // update
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o1",
-        props: {
-          y: 100
+      data: [
+        {
+          oid: "o1",
+          props: {
+            y: 100
+          }
         }
-      }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
-    message.obj.props = {};
+    message.data = [];
     expect(store.items["o1"].props).toHaveProperty("x", 50);
     expect(store.items["o1"].props).toHaveProperty("y", 100);
 
@@ -41,17 +45,19 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o1",
-        props: {
-          _parent: ["root", "0.5"],
-          x: 66
+      data: [
+        {
+          oid: "o1",
+          props: {
+            _parent: ["root", "0.5"],
+            x: 66
+          }
         }
-      }
+      ]
     };
 
     expect(store.request(message)).toEqual("ok");
-    message.obj.props = {};
+    message.data = [];
     expect(store.items["o1"].props).toHaveProperty("x", 66);
     expect(store.items["o1"].props).toHaveProperty("y", 100);
     expect(store.items["o1"].props).toHaveProperty("_parent", ["root", "0.5"]);
@@ -61,10 +67,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "create",
-      obj: {
-        oid: "o2",
-        props: {}
-      }
+      data: [
+        {
+          oid: "o2",
+          props: {}
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
 
@@ -72,15 +80,17 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o2",
-        props: {
-          name: "object-2",
-          x: 123,
-          y: 234,
-          _parent: ["o1", "5"]
+      data: [
+        {
+          oid: "o2",
+          props: {
+            name: "object-2",
+            x: 123,
+            y: 234,
+            _parent: ["o1", "5"]
+          }
         }
-      }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
     expect(store.items["o1"].children).toHaveLength(1);
@@ -102,10 +112,12 @@ describe("objectstore", () => {
     let message: Multiplayer.ClientMessage = {
       store: storeName,
       type: "create",
-      obj: {
-        oid: "o1",
-        props: { x: 10 }
-      }
+      data: [
+        {
+          oid: "o1",
+          props: { x: 10 }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
 
@@ -113,10 +125,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "create",
-      obj: {
-        oid: "o2",
-        props: { x: 20 }
-      }
+      data: [
+        {
+          oid: "o2",
+          props: { x: 20 }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
 
@@ -124,10 +138,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "create",
-      obj: {
-        oid: "o3",
-        props: { x: 30 }
-      }
+      data: [
+        {
+          oid: "o3",
+          props: { x: 30 }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
 
@@ -135,10 +151,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o1",
-        props: { _parent: ["root", "5"] }
-      }
+      data: [
+        {
+          oid: "o1",
+          props: { _parent: ["root", "5"] }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
 
@@ -146,10 +164,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o2",
-        props: { _parent: ["root", "7"] }
-      }
+      data: [
+        {
+          oid: "o2",
+          props: { _parent: ["root", "7"] }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
     expect(store.root.children).toHaveLength(2);
@@ -162,10 +182,12 @@ describe("objectstore", () => {
     message = {
       store: storeName,
       type: "update",
-      obj: {
-        oid: "o3",
-        props: { _parent: ["root", "2"] }
-      }
+      data: [
+        {
+          oid: "o3",
+          props: { _parent: ["root", "2"] }
+        }
+      ]
     };
     expect(store.request(message)).toEqual("ok");
     expect(store.root.children).toHaveLength(3);

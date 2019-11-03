@@ -94,7 +94,6 @@ class ObjectStore {
         }
 
         case "remove": {
-          console.log("remove:", data);
           const oids = data as string[];
           for (let oid of oids) {
             const obj = this.items[oid];

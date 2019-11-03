@@ -13,9 +13,11 @@ export const findexAfter = (s: string) => {
 
   const c = s[l - 1];
   if (c !== lastChar) {
+    // just take the next letter
     const x = alphabet.indexOf(c);
     return s.slice(0, l - 1) + alphabet[x + 1];
   } else {
+    // add a addition letter at the end
     return s + middle;
   }
 };
@@ -28,9 +30,12 @@ export const findexBefore = (s: string) => {
     throw new Error(`bad input: ${s}, ends with:${firstChar}`);
   }
   if (c !== secondChar) {
+    // just take the previor letter
+    // "5" => "4"
     const x = alphabet.indexOf(c);
     return s.slice(0, l - 1) + alphabet[x - 1];
   } else {
+    // "1" => "05"
     return s.slice(0, l - 1) + firstChar + middle;
   }
 };
@@ -42,27 +47,6 @@ export const findexBetween = (s1: string, s2: string) => {
 
   const l1 = s1.length;
   const l2 = s2.length;
-
-  // if (l1 === l2) {
-  //   for (let i = 0; i < l1; i++) {
-  //     const c1 = s1[i];
-  //     const c2 = s2[i];
-  //     if (c1 === c2) {
-  //       continue;
-  //     } else {
-  //       const x1 = alphabet.indexOf(c1);
-  //       const x2 = alphabet.indexOf(c2);
-  //       const delta = x2 - x1;
-  //       if (delta > 1) {
-  //         const xNew = Math.floor(delta / 2);
-  //         const cNew = alphabet[x1 + xNew];
-  //         return s1.slice(0, i) + cNew;
-  //       } else {
-  //         return s1.slice(0, i + 1) + middle;
-  //       }
-  //     }
-  //   }
-  // } else {
   const minL = Math.min(l1, l2);
   for (let i = 0; i < minL; i++) {
     const c1 = s1[i];
@@ -74,12 +58,15 @@ export const findexBetween = (s1: string, s2: string) => {
       const x2 = alphabet.indexOf(c2);
       const delta = x2 - x1;
       if (delta > 1) {
+        // just take the middle of the two letters
+        // "4","6" => "5"
         const xNew = Math.floor(delta / 2);
         const cNew = alphabet[x1 + xNew];
         return s1.slice(0, i) + cNew;
       } else {
-        if (i == l1 - 1) {
-          // last letter of s1
+        if (i === l1 - 1) {
+          // it is the last letter of s1
+          // "7","8" => "75"
           return s1.slice(0, i + 1) + middle;
         } else {
           const nextC1 = s1[i + 1];
@@ -93,13 +80,4 @@ export const findexBetween = (s1: string, s2: string) => {
       }
     }
   }
-  // }
 };
-
-const index = (s: string) => {
-  return alphabet.indexOf(s);
-};
-
-// const middle = () => {
-//   return alphabet[Math.floor(alphabet.length / 2)];
-// };

@@ -11,7 +11,8 @@
     "start": "node index.js",
     "build": "tsc",
     "start:w": "nodemon",
-    "test": "jest --watch"
+    "test": "jest --verbose --coverage",
+    "test:w": "jest --watch"
   },
   "dependencies": {
     "@types/express": "^4.16.0",

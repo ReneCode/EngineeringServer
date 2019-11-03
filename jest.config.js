@@ -1,5 +1,5 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  watchPathIgnorePatterns: ["/data/"]
+  watchPathIgnorePatterns: ["/data/", "/dist/"]
 };
