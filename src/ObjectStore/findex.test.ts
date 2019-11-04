@@ -44,6 +44,10 @@ describe("findex", () => {
   it("findexBetween l1 < l2", () => {
     expect(findexBetween("1", "35")).toEqual("2");
     expect(findexBetween("4", "83")).toEqual("6");
+    expect(findexBetween("0", "1")).toEqual("05");
+    expect(findexBetween("5", "55")).toEqual("52");
+    expect(findexBetween("5", "52")).toEqual("51");
+    expect(findexBetween("5", "51")).toEqual("505");
     expect(findexBetween("38", "5")).toEqual("4");
     expect(findexBetween("38", "7")).toEqual("5");
     expect(findexBetween("458", "47")).toEqual("46");
@@ -53,6 +57,8 @@ describe("findex", () => {
 
   it("findexBetween l1 > l2", () => {
     expect(findexBetween("12", "3")).toEqual("2");
+    expect(findexBetween("13", "2")).toEqual("14");
+    expect(findexBetween("19", "2")).toEqual("195");
     expect(findexBetween("412", "43")).toEqual("42");
     expect(findexBetween("412", "42")).toEqual("413");
     expect(findexBetween("418", "42")).toEqual("419");

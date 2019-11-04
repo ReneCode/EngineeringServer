@@ -1,8 +1,6 @@
 import fs = require("fs");
 import Multiplayer from "./Multiplayer";
-import { getDataFileName } from "../util/getDataFileName";
-import { ok } from "assert";
-import pgUtil from "../postgre/pgUtil";
+import { findexAfter, findexBetween } from "./findex";
 
 const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
@@ -98,6 +96,7 @@ class ObjectStore {
           for (let oid of oids) {
             const obj = this.items[oid];
             delete this.items[oid];
+            // remove from parent.children
             const parent = this.getParent(obj);
             if (parent && parent.children) {
               parent.children = parent.children.filter(i => i !== obj);
@@ -152,17 +151,32 @@ class ObjectStore {
       parentItem.children = [obj];
     } else {
       const children = parentItem.children;
-      let insertIdx = -1;
+      let insertAfterIdx = -1;
+      let lastFIndex = null;
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
-        const [_, idx] = child.props[PARENT_PROP];
-        if (fIndex < idx) {
-          insertIdx = i;
+        lastFIndex = child.props[PARENT_PROP][1];
+        if (fIndex <= lastFIndex) {
+          insertAfterIdx = i;
           break;
         }
       }
-      if (insertIdx >= 0) {
-        parentItem.children.splice(insertIdx, 0, obj);
+      if (insertAfterIdx >= 0) {
+        if (fIndex === lastFIndex) {
+          // same fIndex found
+          let newFIndex;
+          if (insertAfterIdx + 1 === parentItem.children.length) {
+            newFIndex = findexAfter(fIndex);
+          } else {
+            const nextFIndex =
+              parentItem.children[insertAfterIdx + 1].props[PARENT_PROP][1];
+            newFIndex = findexBetween(fIndex, nextFIndex);
+          }
+          // correct fIndex
+          obj.props[PARENT_PROP][1] = newFIndex;
+          insertAfterIdx++;
+        }
+        parentItem.children.splice(insertAfterIdx, 0, obj);
       } else {
         parentItem.children = children.concat(obj);
       }

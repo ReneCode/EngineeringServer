@@ -197,4 +197,130 @@ describe("objectstore", () => {
       expect(store.root.children[2].oid).toEqual("o2");
     }
   });
+
+  it.only("reparent reassign findex", () => {
+    const storeName = "C";
+    const store = createObjectStore(storeName);
+
+    // create first object
+    let message: Multiplayer.ClientMessage = {
+      store: storeName,
+      type: "create",
+      data: [
+        {
+          oid: "o1",
+          props: {
+            _parent: ["root", "5"],
+            x: 10
+          }
+        }
+      ]
+    };
+    expect(store.request(message)).toEqual("ok");
+
+    // create second object
+    message = {
+      store: storeName,
+      type: "create",
+      data: [
+        {
+          oid: "o2",
+          props: {
+            _parent: ["root", "5"],
+            x: 20
+          }
+        }
+      ]
+    };
+    expect(store.request(message)).toEqual("ok");
+
+    expect(store.root.children).toHaveLength(2);
+    if (store.root.children) {
+      expect(store.root.children[0].props).toHaveProperty("x", 10);
+      expect(store.root.children[0].props).toHaveProperty("_parent", [
+        "root",
+        "5"
+      ]);
+      expect(store.root.children[1].props).toHaveProperty("x", 20);
+      expect(store.root.children[1].props).toHaveProperty("_parent", [
+        "root",
+        "6"
+      ]);
+    }
+
+    // create third object
+    message = {
+      store: storeName,
+      type: "create",
+      data: [
+        {
+          oid: "o3",
+          props: {
+            _parent: ["root", "5"],
+            x: 30
+          }
+        }
+      ]
+    };
+    expect(store.request(message)).toEqual("ok");
+
+    expect(store.root.children).toHaveLength(3);
+    if (store.root.children) {
+      expect(store.root.children[0].props).toHaveProperty("x", 10);
+      expect(store.root.children[0].props).toHaveProperty("_parent", [
+        "root",
+        "5"
+      ]);
+      expect(store.root.children[1].props).toHaveProperty("x", 30);
+      expect(store.root.children[1].props).toHaveProperty("_parent", [
+        "root",
+        "55"
+      ]);
+      expect(store.root.children[2].props).toHaveProperty("x", 20);
+      expect(store.root.children[2].props).toHaveProperty("_parent", [
+        "root",
+        "6"
+      ]);
+    }
+
+    // create fourth object
+    message = {
+      store: storeName,
+      type: "create",
+      data: [
+        {
+          oid: "o4",
+          props: {
+            _parent: ["root", "5"],
+            x: 40
+          }
+        }
+      ]
+    };
+    expect(store.request(message)).toEqual("ok");
+
+    expect(store.root.children).toHaveLength(4);
+    if (store.root.children) {
+      expect(store.root.children[0].props).toHaveProperty("x", 10);
+      expect(store.root.children[0].props).toHaveProperty("_parent", [
+        "root",
+        "5"
+      ]);
+      expect(store.root.children[1].props).toHaveProperty("x", 40);
+      expect(store.root.children[1].props).toHaveProperty("_parent", [
+        "root",
+        "52"
+      ]);
+      expect(store.root.children[2].props).toHaveProperty("x", 30);
+      expect(store.root.children[2].props).toHaveProperty("_parent", [
+        "root",
+        "55"
+      ]);
+      expect(store.root.children[3].props).toHaveProperty("x", 20);
+      expect(store.root.children[3].props).toHaveProperty("_parent", [
+        "root",
+        "6"
+      ]);
+    }
+  });
 });

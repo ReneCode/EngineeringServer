@@ -40,7 +40,7 @@ export const findexBefore = (s: string) => {
   }
 };
 
-export const findexBetween = (s1: string, s2: string) => {
+export const findexBetween = (s1: string, s2: string): string => {
   if (s1 === s2) {
     throw new Error("can't get findex between equal numbers:");
   }
@@ -79,5 +79,11 @@ export const findexBetween = (s1: string, s2: string) => {
         }
       }
     }
+  }
+  if (l1 < l2) {
+    // "5", "52"
+    return s1 + findexBetween("0", s2[l1]);
+  } else {
+    return "---";
   }
 };
