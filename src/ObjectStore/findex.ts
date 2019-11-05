@@ -81,9 +81,14 @@ export const findexBetween = (s1: string, s2: string): string => {
     }
   }
   if (l1 < l2) {
-    // "5", "52"
-    return s1 + findexBetween("0", s2[l1]);
+    // "5", "502"
+    let newL1 = l1;
+    while (newL1 + 1 < l2) {
+      s1 = s1 + firstChar;
+      newL1++;
+    }
+    return s1 + findexBetween("0", s2[newL1]);
   } else {
-    return "---";
+    throw new Error("bad situation");
   }
 };
