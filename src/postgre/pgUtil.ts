@@ -66,8 +66,13 @@ const createTableIfNotExists = async (tableName: string, fields: string[]) => {
 
 const initDatabase = async () => {
   try {
+    console.log("#createDatabaseIfNotExists");
     await createDatabaseIfNotExists("engineering");
-    await pool.query("DROP TABLE objectstore");
+    console.log("#drop table");
+    try {
+      await pool.query("DROP TABLE objectstore");
+    } catch (err) {}
+    console.log("#createTableIfNotExists");
     await createTableIfNotExists("objectstore", [
       "id serial primary key not null",
       "name varchar(200) not null",
