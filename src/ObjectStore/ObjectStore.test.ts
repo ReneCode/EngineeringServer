@@ -1,4 +1,4 @@
-import ObjectStore from "./ObjectStore";
+import ObjectStore, { ObjectType } from "./ObjectStore";
 import Multiplayer from "./Multiplayer";
 import { createObjectStore } from "./ObjectStoreList";
 
@@ -9,7 +9,7 @@ describe("objectstore", () => {
     expect(store.name).toEqual(storeName);
 
     // create
-    let o1: Multiplayer.ObjectType = {
+    let o1: ObjectType = {
       oid: "o1",
       props: { x: 50 }
     };
@@ -76,7 +76,7 @@ describe("objectstore", () => {
     const store = createObjectStore(storeName);
 
     // create first object
-    const o1: Multiplayer.ObjectType = {
+    const o1 = {
       oid: "o1",
       props: { x: 10 }
     };
