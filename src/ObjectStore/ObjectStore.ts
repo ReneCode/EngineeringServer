@@ -1,13 +1,20 @@
 import Multiplayer from "./Multiplayer";
 import { findexAfter, findexBetween } from "./findex";
+import { truncate } from "fs";
 
 const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
 
+export type ObjectType = {
+  oid: string;
+  props: Record<string, any>;
+  children?: ObjectType[];
+};
+
 class ObjectStore {
   name: string;
-  root: Multiplayer.ObjectType;
-  items: Record<string, Multiplayer.ObjectType> = {};
+  root: ObjectType;
+  items: Record<string, ObjectType> = {};
 
   constructor(name: string) {
     this.name = name;
@@ -15,9 +22,9 @@ class ObjectStore {
   }
 
   public import(jsonString: string) {
-    const json: Multiplayer.ObjectType = JSON.parse(jsonString);
+    const json: ObjectType = JSON.parse(jsonString);
     if (json) {
-      const addToItemsRecursive = (object: Multiplayer.ObjectType) => {
+      const addToItemsRecursive = (object: ObjectType) => {
         if (!object) {
           return;
         }
@@ -44,12 +51,12 @@ class ObjectStore {
       const { type, data } = message;
       switch (type) {
         case "create": {
-          this.create(data as Multiplayer.ObjectType[]);
+          this.create(data as ObjectType[]);
           return "ok";
         }
 
         case "update":
-          this.update(data as Multiplayer.ObjectType[]);
+          this.update(data as ObjectType[]);
           return "ok";
 
         case "remove":
@@ -67,7 +74,7 @@ class ObjectStore {
     }
   }
 
-  public create(objects: Multiplayer.ObjectType[]) {
+  public create(objects: ObjectType[]) {
     // check if oids are ok
     for (let object of objects) {
       const oid = object.oid;
@@ -83,10 +90,10 @@ class ObjectStore {
     }
   }
 
-  public update(objects: Multiplayer.ObjectType[]) {
+  public update(items: ObjectType[]) {
     // check if all oids are ok
-    for (let object of objects) {
-      const oid = object.oid;
+    for (let item of items) {
+      const oid = item.oid;
       if (!oid) {
         throw new Error("update: oid missing");
       }
@@ -96,15 +103,15 @@ class ObjectStore {
       }
     }
 
-    for (let object of objects) {
-      const foundObject = this.items[object.oid];
-      const newParent = object.props[PARENT_PROP];
-      let reparent = false;
-      if (newParent && foundObject.props[PARENT_PROP] !== newParent) {
-        reparent = true;
-      }
-      foundObject.props = { ...foundObject.props, ...object.props };
+    for (let item of items) {
+      const foundObject = this.items[item.oid];
+      const oldParent = foundObject.props[PARENT_PROP];
+      const newParent = item.props[PARENT_PROP];
+      let reparent = this.parentPropChanged(oldParent, newParent);
+      foundObject.props = { ...foundObject.props, ...item.props };
       if (reparent) {
+        const parent = this.getParent(foundObject);
+        this.removeFromChildren(parent, item.oid);
         this.reparent(foundObject);
       }
     }
@@ -116,16 +123,12 @@ class ObjectStore {
       delete this.items[oid];
       // remove from parent.children
       const parent = this.getParent(obj);
-      if (parent && parent.children) {
-        parent.children = parent.children.filter(i => i !== obj);
-      }
+      this.removeFromChildren(parent, oid);
       // TODO remove child items
     }
   }
 
-  private getParent(
-    obj: Multiplayer.ObjectType
-  ): Multiplayer.ObjectType | null {
+  private getParent(obj: ObjectType): ObjectType | null {
     const parentProp = obj.props[PARENT_PROP];
     if (!parentProp) {
       return null;
@@ -138,13 +141,13 @@ class ObjectStore {
     }
   }
 
-  private reparent(obj: Multiplayer.ObjectType): boolean {
+  private reparent(obj: ObjectType): boolean {
     const parentProp = obj.props[PARENT_PROP];
     if (!parentProp) {
       return true;
     }
     const [parentId, fIndex] = parentProp;
-    let parentItem: Multiplayer.ObjectType;
+    let parentItem: ObjectType;
     if (parentId === ROOT_OID) {
       parentItem = this.root;
     } else {
@@ -190,6 +193,19 @@ class ObjectStore {
     }
 
     return true;
+  }
+
+  private parentPropChanged(a1: string[], a2: string[]) {
+    if ((!a1 && !a2) || (a1 && a2 && a1[0] === a2[0] && a1[1] === a2[1])) {
+      return false;
+    }
+    return true;
+  }
+
+  private removeFromChildren(parent: ObjectType | null, childOid: string) {
+    if (parent && parent.children) {
+      parent.children = parent.children.filter(i => i.oid !== childOid);
+    }
   }
 }
 

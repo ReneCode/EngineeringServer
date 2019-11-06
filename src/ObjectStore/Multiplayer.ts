@@ -1,3 +1,5 @@
+import { ObjectType } from "./ObjectStore";
+
 export namespace Multiplayer {
   export type ActionType = "create" | "remove" | "update";
   export type ResultType = "ok" | "reject";
@@ -15,12 +17,6 @@ export namespace Multiplayer {
     result: ResultType;
     type: ActionType;
     data: ObjectType[] | string[];
-  };
-
-  export type ObjectType = {
-    oid: string;
-    props: Record<string, any>;
-    children?: ObjectType[];
   };
 }
 

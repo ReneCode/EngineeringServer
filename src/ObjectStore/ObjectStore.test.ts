@@ -100,25 +100,90 @@ describe("objectstore", () => {
       oid: "o2",
       props: { _parent: ["root", "7"] }
     };
-    store.update([o1, o2]);
+    store.update([o1_a, o2_a]);
 
-    expect(store.root.children).toHaveLength(2);
-    if (store.root.children) {
-      expect(store.root.children[0].oid).toEqual("o1");
-      expect(store.root.children[1].oid).toEqual("o2");
-    }
+    expect(store.root.children).toEqual([
+      {
+        oid: "o1",
+        props: { x: 10, _parent: ["root", "5"] }
+      },
+      {
+        oid: "o2",
+        props: { x: 20, _parent: ["root", "7"] }
+      }
+    ]);
     // reparent o3
     const o3_a = {
       oid: "o3",
       props: { _parent: ["root", "2"] }
     };
-    store.update([o3]);
+    store.update([o3_a]);
     expect(store.root.children).toHaveLength(3);
     if (store.root.children) {
       expect(store.root.children[0].oid).toEqual("o3");
       expect(store.root.children[1].oid).toEqual("o1");
       expect(store.root.children[2].oid).toEqual("o2");
     }
+  });
+
+  it("reparent 6 in 5,6", () => {
+    const storeName = "56";
+    const store = createObjectStore(storeName);
+
+    // create first object
+    const o5 = {
+      oid: "o5",
+      props: { x: 5, _parent: ["root", "5"] }
+    };
+    const o6 = {
+      oid: "o6",
+      props: { x: 6, _parent: ["root", "5"] }
+    };
+    store.create([o5, o6]);
+    expect(store.root.children).toEqual([
+      {
+        oid: "o5",
+        props: { x: 5, _parent: ["root", "5"] }
+      },
+      {
+        oid: "o6",
+        props: { x: 6, _parent: ["root", "6"] }
+      }
+    ]);
+
+    // no reparent
+    const o6a = {
+      oid: "o6",
+      props: { x: 66, _parent: ["root", "6"] }
+    };
+    store.update([o6a]);
+    expect(store.root.children).toEqual([
+      {
+        oid: "o5",
+        props: { x: 5, _parent: ["root", "5"] }
+      },
+      {
+        oid: "o6",
+        props: { x: 66, _parent: ["root", "6"] }
+      }
+    ]);
+
+    // do reparent
+    const o6b = {
+      oid: "o6",
+      props: { x: 666, _parent: ["root", "4"] }
+    };
+    store.update([o6b]);
+    expect(store.root.children).toEqual([
+      {
+        oid: "o6",
+        props: { x: 666, _parent: ["root", "4"] }
+      },
+      {
+        oid: "o5",
+        props: { x: 5, _parent: ["root", "5"] }
+      }
+    ]);
   });
 
   it("reparent reassign findex", () => {
