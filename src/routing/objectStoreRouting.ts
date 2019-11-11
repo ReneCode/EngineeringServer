@@ -80,6 +80,7 @@ router.get("/:type/:id", async (req, res) => {
   }
 });
 
+// save to database
 router.post("/:type/:id", async (req, res) => {
   try {
     const { type, id } = req.params;

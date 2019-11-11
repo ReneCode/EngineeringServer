@@ -1,4 +1,4 @@
-import ObjectStore from "./ObjectStore";
+import ObjectStore, { ObjectType } from "./ObjectStore";
 import Multiplayer from "./Multiplayer";
 import pg from "../pg";
 import pgUtil from "../postgre/pgUtil";
@@ -30,5 +30,28 @@ export const objectStoreRequest = (
     return "reject";
   }
 
-  return store.request(message);
+  try {
+    const { type, data } = message;
+    switch (type) {
+      case "create":
+        store.create(data as ObjectType[]);
+        return "ok";
+
+      case "update":
+        store.update(data as ObjectType[]);
+        return "ok";
+
+      case "remove":
+        store.remove(data as string[]);
+        return "ok";
+
+      default:
+        throw new Error(`ObjectStore.request: bad message type:${type}`);
+    }
+  } catch (err) {
+    console.error("--------------");
+    console.error(err);
+    console.error("--------------");
+    return "reject";
+  }
 };

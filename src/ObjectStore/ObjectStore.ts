@@ -1,6 +1,4 @@
-import Multiplayer from "./Multiplayer";
 import { findexAfter, findexBetween } from "./findex";
-import { truncate } from "fs";
 
 const PARENT_PROP = "_parent";
 const ROOT_OID = "root";
@@ -19,6 +17,10 @@ class ObjectStore {
   constructor(name: string) {
     this.name = name;
     this.root = { oid: "root", props: {}, children: [] };
+  }
+
+  public getItem(oid: string): ObjectType | undefined {
+    return this.items[oid];
   }
 
   public import(jsonString: string) {
@@ -46,34 +48,6 @@ class ObjectStore {
     return data;
   }
 
-  public request(message: Multiplayer.ClientMessage): Multiplayer.ResultType {
-    try {
-      const { type, data } = message;
-      switch (type) {
-        case "create": {
-          this.create(data as ObjectType[]);
-          return "ok";
-        }
-
-        case "update":
-          this.update(data as ObjectType[]);
-          return "ok";
-
-        case "remove":
-          this.remove(data as string[]);
-          return "ok";
-
-        default:
-          throw new Error(`ObjectStore.request: bad message type:${type}`);
-      }
-    } catch (err) {
-      console.error("--------------");
-      console.error(err);
-      console.error("--------------");
-      return "reject";
-    }
-  }
-
   public create(objects: ObjectType[]) {
     // check if oids are ok
     for (let object of objects) {
@@ -85,8 +59,9 @@ class ObjectStore {
 
     for (let object of objects) {
       const oid = object.oid;
-      this.items[oid] = object;
-      this.reparent(object);
+      const newItem = this.copyItem(object);
+      this.items[oid] = newItem;
+      this.reparent(newItem);
     }
   }
 
@@ -206,6 +181,16 @@ class ObjectStore {
     if (parent && parent.children) {
       parent.children = parent.children.filter(i => i.oid !== childOid);
     }
+  }
+
+  private copyItem(item: ObjectType): ObjectType {
+    return { ...item, props: { ...item.props } };
+  }
+
+  private copyItems(items: ObjectType[]): ObjectType[] {
+    return items.map(item => {
+      return { ...item, props: { ...item.props } };
+    });
   }
 }
 

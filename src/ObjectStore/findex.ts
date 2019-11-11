@@ -18,7 +18,7 @@ export const findexAfter = (s: string) => {
     return s.slice(0, l - 1) + alphabet[x + 1];
   } else {
     // add a addition letter at the end
-    return s + middle;
+    return s + secondChar;
   }
 };
 
@@ -36,7 +36,7 @@ export const findexBefore = (s: string) => {
     return s.slice(0, l - 1) + alphabet[x - 1];
   } else {
     // "1" => "05"
-    return s.slice(0, l - 1) + firstChar + middle;
+    return s.slice(0, l - 1) + firstChar + lastChar;
   }
 };
 

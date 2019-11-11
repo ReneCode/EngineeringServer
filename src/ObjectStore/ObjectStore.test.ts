@@ -1,6 +1,4 @@
 import ObjectStore, { ObjectType } from "./ObjectStore";
-import Multiplayer from "./Multiplayer";
-import { createObjectStore } from "./ObjectStoreList";
 
 describe("objectstore", () => {
   it("create", () => {
@@ -64,16 +62,70 @@ describe("objectstore", () => {
     const jsonString = store.export();
 
     // reload json
-    const storeB = createObjectStore("B");
+
+    const storeB = new ObjectStore("B");
     storeB.import(jsonString);
     expect(storeB.items["o1"]).toHaveProperty("oid", "o1");
     expect(storeB.items["o2"]).toBeTruthy();
     expect(storeB.items["o3"]).toBeFalsy();
   });
 
+  it("change items => change root.children", () => {
+    const store = new ObjectStore("A2");
+
+    // create first object
+    const o1: ObjectType = {
+      oid: "o1",
+      props: { x: 10, _parent: ["root", "5"] }
+    };
+    const o2 = {
+      oid: "o2",
+      props: { x: 20, _parent: ["root", "4"] }
+    };
+    const o3 = {
+      oid: "o3",
+      props: { x: 30, _parent: ["root", "3"] }
+    };
+    store.create([o1, o2, o3]);
+
+    expect(store.root.children).toEqual([o3, o2, o1]);
+    expect(store.items).toEqual({
+      o1: o1,
+      o2: o2,
+      o3: o3
+    });
+    o1.props.x = 100;
+    // no change in the store
+    expect(store.root.children).toEqual([
+      o3,
+      o2,
+      { oid: "o1", props: { x: 10, _parent: ["root", "5"] } }
+    ]);
+    expect(store.getItem("o1")).toEqual({
+      oid: "o1",
+      props: { x: 10, _parent: ["root", "5"] }
+    });
+
+    // update
+    store.update([{ oid: "o1", props: { x: 11 } }]);
+    const newO1 = {
+      oid: "o1",
+      props: { x: 11, _parent: ["root", "5"] }
+    };
+    expect(store.items["o1"]).toEqual(newO1);
+    expect(store.root.children).toEqual([o3, o2, newO1]);
+
+    // remove
+    store.remove(["o2"]);
+    expect(store.items).toEqual({
+      o1: newO1,
+      o3: o3
+    });
+    expect(store.root.children).toEqual([o3, newO1]);
+  });
+
   it("reparent insert into correct order", () => {
-    const storeName = "A";
-    const store = createObjectStore(storeName);
+    const store = new ObjectStore("A");
 
     // create first object
     const o1 = {
@@ -127,8 +179,7 @@ describe("objectstore", () => {
   });
 
   it("reparent 6 in 5,6", () => {
-    const storeName = "56";
-    const store = createObjectStore(storeName);
+    const store = new ObjectStore("56");
 
     // create first object
     const o5 = {
@@ -187,40 +238,26 @@ describe("objectstore", () => {
   });
 
   it("reparent reassign findex", () => {
-    const storeName = "C";
-    const store = createObjectStore(storeName);
+    const store = new ObjectStore("C");
 
     // create first object
-    let message: Multiplayer.ClientMessage = {
-      store: storeName,
-      type: "create",
-      data: [
-        {
-          oid: "o1",
-          props: {
-            _parent: ["root", "5"],
-            x: 10
-          }
+    const objects = [
+      {
+        oid: "o1",
+        props: {
+          _parent: ["root", "5"],
+          x: 10
         }
-      ]
-    };
-    expect(store.request(message)).toEqual("ok");
-
-    // create second object
-    message = {
-      store: storeName,
-      type: "create",
-      data: [
-        {
-          oid: "o2",
-          props: {
-            _parent: ["root", "5"],
-            x: 20
-          }
+      },
+      {
+        oid: "o2",
+        props: {
+          _parent: ["root", "5"],
+          x: 20
         }
-      ]
-    };
-    expect(store.request(message)).toEqual("ok");
+      }
+    ];
+    store.create(objects);
 
     expect(store.root.children).toHaveLength(2);
     if (store.root.children) {
@@ -237,20 +274,14 @@ describe("objectstore", () => {
     }
 
     // create third object
-    message = {
-      store: storeName,
-      type: "create",
-      data: [
-        {
-          oid: "o3",
-          props: {
-            _parent: ["root", "5"],
-            x: 30
-          }
-        }
-      ]
+    const o3 = {
+      oid: "o3",
+      props: {
+        _parent: ["root", "5"],
+        x: 30
+      }
     };
-    expect(store.request(message)).toEqual("ok");
+    store.create([o3]);
 
     expect(store.root.children).toHaveLength(3);
     if (store.root.children) {
@@ -272,20 +303,14 @@ describe("objectstore", () => {
     }
 
     // create fourth object
-    message = {
-      store: storeName,
-      type: "create",
-      data: [
-        {
-          oid: "o4",
-          props: {
-            _parent: ["root", "5"],
-            x: 40
-          }
-        }
-      ]
+    const o4 = {
+      oid: "o4",
+      props: {
+        _parent: ["root", "5"],
+        x: 40
+      }
     };
-    expect(store.request(message)).toEqual("ok");
+    store.create([o4]);
 
     expect(store.root.children).toHaveLength(4);
     if (store.root.children) {

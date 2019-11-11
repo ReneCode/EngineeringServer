@@ -13,9 +13,9 @@ describe("findex", () => {
   it("findexBefore", () => {
     expect(findexBefore("7")).toEqual("6");
     expect(findexBefore("2")).toEqual("1");
-    expect(findexBefore("1")).toEqual("05");
+    expect(findexBefore("1")).toEqual("09");
     expect(findexBefore("05")).toEqual("04");
-    expect(findexBefore("0001")).toEqual("00005");
+    expect(findexBefore("0001")).toEqual("00009");
     expect(findexBefore("2432")).toEqual("2431");
     expect(() => findexBefore("10")).toThrow();
   });
@@ -23,7 +23,7 @@ describe("findex", () => {
   it("findexAfter", () => {
     expect(findexAfter("3")).toEqual("4");
     expect(findexAfter("8")).toEqual("9");
-    expect(findexAfter("9")).toEqual("95");
+    expect(findexAfter("9")).toEqual("91");
     expect(findexAfter("543")).toEqual("544");
   });
   it("findexBetween same numbers", () => {
@@ -41,7 +41,7 @@ describe("findex", () => {
     expect(findexBetween("129", "134")).toEqual("1295");
   });
 
-  it.only("findexBetween l1 < l2", () => {
+  it("findexBetween l1 < l2", () => {
     expect(findexBetween("5", "505")).toEqual("502");
     expect(findexBetween("5", "5001")).toEqual("50005");
     expect(findexBetween("1", "35")).toEqual("2");
