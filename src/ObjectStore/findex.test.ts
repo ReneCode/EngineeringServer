@@ -26,6 +26,7 @@ describe("findex", () => {
     expect(findexAfter("9")).toEqual("91");
     expect(findexAfter("543")).toEqual("544");
   });
+
   it("findexBetween same numbers", () => {
     expect(() => findexBetween("3", "3")).toThrow();
   });

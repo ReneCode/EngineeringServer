@@ -161,7 +161,8 @@ class ObjectStore {
           obj.props[PARENT_PROP][1] = newFIndex;
           insertAfterIdx++;
         }
-        parentItem.children.splice(insertAfterIdx, 0, obj);
+        children.splice(insertAfterIdx, 0, obj);
+        parentItem.children = [...children];
       } else {
         parentItem.children = children.concat(obj);
       }
